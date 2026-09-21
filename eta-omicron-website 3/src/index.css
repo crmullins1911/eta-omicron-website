@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-omega-purple: #3b0764;
+  --color-omega-purple-dark: #250a3d;
+  --color-omega-gold: #c9a227;
+  --color-omega-gold-light: #e6c65c;
+  --font-display: "Georgia", "Times New Roman", serif;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: #faf9f6;
+  color: #1a1a1a;
+}
+
+.container-page {
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
