@@ -1,0 +1,44 @@
+/* FloatingPhotos.css */
+
+.floating-photos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-photo {
+  position: absolute;
+  object-fit: cover;
+  border-radius: 12px;
+  opacity: 0.18;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation-name: drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(var(--drift-x), var(--drift-y)) rotate(var(--rotate));
+  }
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .floating-photo {
+    animation: none;
+  }
+}
+
+/* Slightly more visible on larger screens, quieter on mobile */
+@media (max-width: 768px) {
+  .floating-photo {
+    opacity: 0.12;
+  }
+}

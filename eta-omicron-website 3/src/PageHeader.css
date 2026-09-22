@@ -1,0 +1,119 @@
+/* PageHeader.css
+   Purple/gold diagonal banner. Adjust the two purple hex values below to
+   match your exact brand shades if these aren't quite right. */
+
+:root {
+  --brand-purple-dark: #3a1a5c;
+  --brand-purple-light: #6b3fa0;
+  --brand-gold: #c9a03e;
+}
+
+.site-header {
+  position: relative;
+  background: linear-gradient(115deg, var(--brand-purple-dark) 0%, var(--brand-purple-light) 65%, var(--brand-purple-light) 100%);
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Diagonal angled shapes layered over the gradient, like the reference banner */
+.site-header::before,
+.site-header::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  height: 140%;
+  width: 45%;
+  background: rgba(255, 255, 255, 0.06);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+.site-header::before {
+  right: 8%;
+}
+.site-header::after {
+  right: -6%;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.site-header-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+}
+
+.site-header-logo img {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  display: block;
+}
+
+.site-header-nav ul {
+  display: flex;
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.site-header-nav a:hover,
+.site-header-nav a:focus-visible {
+  color: var(--brand-gold);
+}
+
+.site-header-title-block {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2.5rem 1rem 3.5rem;
+}
+
+.site-header-title-block h1 {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 500;
+  margin: 0 0 0.75rem;
+}
+
+.site-header-breadcrumb {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.site-header-breadcrumb a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.site-header-breadcrumb a:hover {
+  color: var(--brand-gold);
+}
+
+.breadcrumb-sep {
+  margin: 0 0.35rem;
+  opacity: 0.7;
+}
+
+/* Mobile: stack nav, shrink padding */
+@media (max-width: 768px) {
+  .site-header-bar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+  .site-header-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
