@@ -10,10 +10,11 @@ import { Link } from 'react-router-dom'
  * Usage (inside a page component, above your page content):
  *   <PageBanner
  *     title="Programs"
+ *     subtitle="Optional one-line description under the title."
  *     breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Programs' }]}
  *   />
  */
-export default function PageBanner({ title, breadcrumb = [] }) {
+export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-omega-purple to-omega-purple-dark text-white">
       {/* diagonal accent shapes, matching the reference banner */}
@@ -22,6 +23,7 @@ export default function PageBanner({ title, breadcrumb = [] }) {
 
       <div className="container-page relative py-14 md:py-16 text-center">
         <h1 className="font-display text-4xl md:text-5xl font-bold">{title}</h1>
+        {subtitle && <p className="mx-auto mt-3 max-w-2xl text-white/80">{subtitle}</p>}
 
         {breadcrumb.length > 0 && (
           <nav aria-label="Breadcrumb" className="mt-3 text-sm text-white/80">

@@ -1,10 +1,11 @@
-import PageHeader from '../components/PageHeader'
+import PageBanner from '../components/PageBanner'
 import { history, officers } from '../data/placeholders'
 
 export default function About() {
   return (
     <div>
-      <PageHeader
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'About Us' }]}
         title="About Us"
         subtitle="Our history, our leadership, and the principles that guide us."
       />

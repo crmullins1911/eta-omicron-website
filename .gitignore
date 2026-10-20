@@ -1,0 +1,16 @@
+# Installed packages and build output: recreated by npm install / npm run build.
+node_modules/
+dist/
+
+# Secrets: Supabase keys live in .env locally and in Vercel's settings when deployed.
+.env
+.env.*
+!.env.example
+
+# Vercel's local link to the project.
+.vercel/
+
+# Logs and system files.
+*.log
+.DS_Store
+Thumbs.db

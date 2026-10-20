@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import PageHeader from '../../components/PageHeader'
+import PageBanner from '../../components/PageBanner'
 import { committees } from '../../data/placeholders'
 
 export default function Committees() {
   return (
     <div>
-      <PageHeader
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Committees' }]}
         title="Committees"
         subtitle="Each committee manages its own events, forms, and applications."
       />

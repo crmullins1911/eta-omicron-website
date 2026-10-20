@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react'
-import PageHeader from '../components/PageHeader'
+import PageBanner from '../components/PageBanner'
 import { supabase } from '../lib/supabaseClient'
 import { events as placeholderEvents } from '../data/placeholders'
 
-// This page tries to load events from a Supabase table called "events"
-// with columns: title (text), event_date (date), location (text),
-// description (text). If that table doesn't exist yet, or the query
-// fails, it falls back to the placeholder list in src/data/placeholders.js
-// so the page always renders something.
+// Events come from the "events" table the member app (app.etaomicron.org) uses. The member app
+// shows every event to signed-in brothers; this public page shows only the events marked
+// on_website = true (a Supabase policy lets visitors read just those). Mark events from the
+// member app's data, or ask Jarvis in the Command Center ("put the banquet on the website").
 //
-// To make this "addable" without touching code, create the table in
-// Supabase and give trusted committee members insert access via a
-// Supabase Row Level Security policy (or manage it from the Brothers Only
-// dashboard once you build an admin form there).
+// If Supabase can't be reached, the page falls back to the placeholder list in
+// src/data/placeholders.js so it always renders something.
 
 export default function Events() {
   const [events, setEvents] = useState(placeholderEvents)
@@ -25,12 +22,13 @@ export default function Events() {
     async function loadEvents() {
       const { data, error } = await supabase
         .from('events')
-        .select('title, event_date, location, description')
+        .select('title, event_date, event_time, location, description')
+        .eq('on_website', true)
         .order('event_date', { ascending: true })
 
       if (!active) return
 
-      if (error || !data || data.length === 0) {
+      if (error || !data) {
         setUsingFallback(true)
         setEvents(placeholderEvents)
       } else {
@@ -39,6 +37,7 @@ export default function Events() {
           data.map((e) => ({
             title: e.title,
             date: e.event_date,
+            time: e.event_time,
             location: e.location,
             description: e.description,
           }))
@@ -55,13 +54,18 @@ export default function Events() {
 
   return (
     <div>
-      <PageHeader title="Events" subtitle="Everything happening with the chapter this year." />
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]} title="Events" subtitle="Everything happening with the chapter this year." />
 
       <section className="container-page py-14">
         {usingFallback && !loading && (
           <p className="text-sm text-gray-400 mb-6 italic">
             Showing placeholder events. Connect a Supabase "events" table to manage these live.
           </p>
+        )}
+
+        {!usingFallback && !loading && events.length === 0 && (
+          <p className="text-gray-600">No events are posted yet. Check back soon.</p>
         )}
 
         <div className="space-y-4">
@@ -78,8 +82,8 @@ export default function Events() {
               </div>
               <div>
                 <h3 className="font-semibold text-lg text-omega-purple">{e.title}</h3>
-                <p className="text-sm text-gray-500">{e.location}</p>
-                <p className="text-gray-600 mt-1">{e.description}</p>
+                <p className="text-sm text-gray-500">{[e.time, e.location].filter(Boolean).join(', ')}</p>
+                {e.description && <p className="text-gray-600 mt-1">{e.description}</p>}
               </div>
             </article>
           ))}
@@ -89,12 +93,19 @@ export default function Events() {
   )
 }
 
+// A date-only string like "2026-11-15" is read by new Date() as midnight UTC, which is still the
+// day before in the United States. Read it as a local calendar date instead.
+function toDate(dateStr) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr || ''))
+  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(dateStr)
+}
+
 function formatMonth(dateStr) {
-  const d = new Date(dateStr)
+  const d = toDate(dateStr)
   return isNaN(d) ? '' : d.toLocaleString('en-US', { month: 'short' })
 }
 
 function formatDay(dateStr) {
-  const d = new Date(dateStr)
+  const d = toDate(dateStr)
   return isNaN(d) ? '' : d.getDate()
 }

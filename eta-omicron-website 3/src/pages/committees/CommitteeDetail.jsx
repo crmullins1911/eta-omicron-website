@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import PageHeader from '../../components/PageHeader'
+import PageBanner from '../../components/PageBanner'
 import { supabase } from '../../lib/supabaseClient'
 import { committees } from '../../data/placeholders'
 
@@ -49,7 +49,8 @@ export default function CommitteeDetail() {
 
   return (
     <div>
-      <PageHeader title={committee.name} subtitle={committee.description} />
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Committees', to: '/committees' }, { label: committee.name }]} title={committee.name} subtitle={committee.description} />
 
       <section className="container-page py-14">
         <h2 className="font-display text-2xl font-bold text-omega-purple mb-4">

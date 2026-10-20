@@ -1,4 +1,4 @@
-import PageHeader from '../../components/PageHeader'
+import PageBanner from '../../components/PageBanner'
 import { useAuth } from '../../context/AuthContext'
 
 // This is the landing page for authenticated members. Add sections here
@@ -12,7 +12,8 @@ export default function Dashboard() {
 
   return (
     <div>
-      <PageHeader title="Brothers Only" subtitle="Member and financial information for the chapter." />
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Brothers Only' }]} title="Brothers Only" subtitle="Member and financial information for the chapter." />
 
       <section className="container-page py-14">
         <div className="flex items-center justify-between mb-8">
