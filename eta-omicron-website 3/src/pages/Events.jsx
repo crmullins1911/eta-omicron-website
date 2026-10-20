@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import PageHeader from '../components/PageHeader'
+import PageBanner from '../components/PageBanner'
 import { supabase } from '../lib/supabaseClient'
 import { events as placeholderEvents } from '../data/placeholders'
 
@@ -55,7 +55,8 @@ export default function Events() {
 
   return (
     <div>
-      <PageHeader title="Events" subtitle="Everything happening with the chapter this year." />
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]} title="Events" subtitle="Everything happening with the chapter this year." />
 
       <section className="container-page py-14">
         {usingFallback && !loading && (
@@ -89,12 +90,19 @@ export default function Events() {
   )
 }
 
+// A date-only string like "2026-11-15" is read by new Date() as midnight UTC, which is still the
+// day before in the United States. Read it as a local calendar date instead.
+function toDate(dateStr) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr || ''))
+  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(dateStr)
+}
+
 function formatMonth(dateStr) {
-  const d = new Date(dateStr)
+  const d = toDate(dateStr)
   return isNaN(d) ? '' : d.toLocaleString('en-US', { month: 'short' })
 }
 
 function formatDay(dateStr) {
-  const d = new Date(dateStr)
+  const d = toDate(dateStr)
   return isNaN(d) ? '' : d.getDate()
 }

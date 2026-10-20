@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import PageHeader from '../components/PageHeader'
+import PageBanner from '../components/PageBanner'
 import { supabase } from '../lib/supabaseClient'
 import { mediaItems as placeholderMedia } from '../data/placeholders'
 
@@ -38,7 +38,8 @@ export default function Media() {
 
   return (
     <div>
-      <PageHeader title="Media" subtitle="Photos and videos from our chapter events." />
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Media' }]} title="Media" subtitle="Photos and videos from our chapter events." />
 
       <section className="container-page py-14">
         {usingFallback && (

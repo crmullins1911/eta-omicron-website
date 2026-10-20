@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import PageHeader from '../../components/PageHeader'
+import PageBanner from '../../components/PageBanner'
 import { useAuth } from '../../context/AuthContext'
 
 export default function Login() {
@@ -33,7 +33,8 @@ export default function Login() {
 
   return (
     <div>
-      <PageHeader
+      <PageBanner
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Brothers Only' }]}
         title="Brothers Only"
         subtitle="Sign in with your chapter account to access member and financial information."
       />
