@@ -13,7 +13,7 @@ const MINUTE = 60 * 1000
 // Events: the member app's "events" table, only rows marked on_website = true.
 export const eventsQuery = {
   key: 'events:public',
-  ttl: 5 * MINUTE,
+  ttl: 1 * MINUTE, // events change often (from the member app); keep them close to live
   fallback: placeholderEvents,
   fetch: () =>
     restSelect('events', {
@@ -34,7 +34,7 @@ export const eventsQuery = {
 // Media: "media_items" table (+ Supabase Storage URLs). An empty table shows placeholders.
 export const mediaQuery = {
   key: 'media:public',
-  ttl: 15 * MINUTE,
+  ttl: 5 * MINUTE,
   fallback: placeholderMedia,
   emptyIsFallback: true,
   fetch: () =>
@@ -48,7 +48,7 @@ export const mediaQuery = {
 export function committeeDocsQuery(slug) {
   return {
     key: `committee-docs:${slug}`,
-    ttl: 15 * MINUTE,
+    ttl: 5 * MINUTE,
     fallback: [],
     fetch: () =>
       restSelect('committee_documents', {
