@@ -12,18 +12,18 @@ export default function Committees() {
         subtitle="Each committee manages its own events, forms, and applications."
       />
 
-      <section className="container-page py-14 grid gap-6 sm:grid-cols-2">
+      <section className="container-page py-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {committees.map((c) => (
           <Link
             key={c.slug}
             to={`/committees/${c.slug}`}
             {...intent(`/committees/${c.slug}`)}
-            className="reveal p-6 rounded-lg border border-ink/10 bg-plum/60 hover:border-gold transition"
+            className="reveal group flex flex-col p-6 rounded-lg border border-ink/15 bg-plum/40 hover:border-gold hover:bg-plum/70 transition-colors"
           >
             <h3 className="font-display text-2xl font-semibold text-ink">{c.name}</h3>
-            <p className="text-ink/75 mt-2">{c.description}</p>
-            <span className="inline-block mt-4 text-sm font-semibold text-ink underline">
-              View committee page &rarr;
+            <p className="text-ink/75 mt-2 flex-1 leading-relaxed">{c.description}</p>
+            <span className="mt-5 text-sm font-semibold text-gold-light group-hover:text-gold">
+              Forms &amp; updates &rarr;
             </span>
           </Link>
         ))}
