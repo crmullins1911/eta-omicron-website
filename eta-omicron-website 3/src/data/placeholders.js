@@ -3,12 +3,12 @@
 // you're ready to manage this content dynamically.
 
 export const officers = [
-  { role: 'Basileus (President)', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
-  { role: 'Vice Basileus (Vice President)', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
-  { role: 'Keeper of Records (Secretary)', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
-  { role: 'Keeper of Finance (Treasurer)', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
-  { role: 'Keeper of Seals', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
+  { role: 'Basileus', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
+  { role: 'Vice Basileus', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
+  { role: 'Keeper of Records and Seal', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
+  { role: 'Keeper of Finance', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
   { role: 'Chaplain', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
+  { role: 'Keeper of Peace', name: 'Officer Name', bio: 'Chapter history and bio go here.' },
 ]
 
 export const history = `Eta Omicron Chapter of Omega Psi Phi Fraternity, Inc. has served its
