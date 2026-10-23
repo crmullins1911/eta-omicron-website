@@ -40,8 +40,8 @@ export const committees = [
     description: 'Oversees academic grants, financial aid, and scholarship selections for students.',
   },
   {
-    slug: 'stem-quiz-bowl',
-    name: 'STEM / Black History Quiz Bowl Committee',
+    slug: 'stem',
+    name: 'STEM Committee',
     description: 'Manages educational enrichment, science, technology, engineering, and math initiatives.',
   },
   {
