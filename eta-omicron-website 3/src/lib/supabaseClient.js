@@ -5,8 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 //
 // Set these in a local .env file (see .env.example) or in your Vercel
 // project's Environment Variables when you deploy.
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+import { SUPABASE_URL as supabaseUrl, SUPABASE_ANON_KEY as supabaseAnonKey } from './supabaseConfig'
 
 if (!supabaseUrl || !supabaseAnonKey) {
   // Fail with a clear message (shown on the Brothers Only page) instead of a cryptic one.

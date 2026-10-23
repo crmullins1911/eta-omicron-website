@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import PageBanner from '../components/PageBanner'
 import { SUPABASE_URL, supabaseConfigured, supabaseHeaders } from '../lib/rest'
+import { settingFixes } from '../lib/supabaseConfig'
 import { clearCache, getSeed } from '../lib/cache'
 
 // Hidden diagnostics page (/status): checks every Supabase request the website makes, live, and
@@ -103,6 +104,16 @@ export default function Status() {
                 : 'none'
             }
           />
+          {settingFixes.length > 0 && (
+            <div className="mt-3 rounded-md border border-amber-400/50 bg-amber-400/10 p-3 text-sm">
+              <p className="font-semibold text-amber-200">Repaired automatically (fix these in Vercel when convenient):</p>
+              <ul className="mt-1 list-disc pl-5 text-ink/85">
+                {settingFixes.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           {projectRef && (
             <p className="text-sm text-ink/70 pt-2">
               Compare the project above with the one app.etaomicron.org uses (Supabase dashboard → Project Settings →
@@ -190,6 +201,7 @@ async function check(c) {
     return {
       ok: false,
       summary: 'could not connect',
+      detail: String(err?.message || err).slice(0, 120),
       advice: `The browser could not reach Supabase at all (${err.message}). The project address in Vercel is probably wrong, or the project is paused (free projects pause after a week without use; restore it from the Supabase dashboard).`,
     }
   }
@@ -262,12 +274,13 @@ function buildReport({ projectRef, seed, results }) {
     `Page: ${typeof location !== 'undefined' ? location.host : ''}`,
     `Supabase project: ${projectRef || 'NOT SET'}`,
     `Anon key: ${supabaseConfigured ? 'present' : 'MISSING'}`,
+    `Settings repaired: ${settingFixes.length ? settingFixes.join('; ') : 'none'}`,
     `Baked-in data: ${seed?.builtAt ? new Date(seed.builtAt).toISOString() : 'none'} (${Object.keys(seed?.data || {}).join(', ') || 'no live sets'})`,
     '',
   ]
   for (const c of CHECKS) {
     const r = results[c.id]
-    lines.push(`${!r ? '...  ' : !r.ok ? 'FAIL ' : r.empty ? 'EMPTY' : 'OK   '}  ${c.label}: ${r?.summary || 'pending'}`)
+    lines.push(`${!r ? '...  ' : !r.ok ? 'FAIL ' : r.empty ? 'EMPTY' : 'OK   '}  ${c.label}: ${r?.summary || 'pending'}${r?.detail ? ` (${r.detail})` : ''}`)
   }
   return lines.join('\n')
 }
