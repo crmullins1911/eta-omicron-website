@@ -66,12 +66,19 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex-[1_1_420px] flex gap-3.5 h-[420px] md:h-[520px]">
-          <Photo photo={sitePhotos.heroPortrait} eager className="flex-1 h-full" />
-          <div className="flex-1 flex flex-col gap-3.5">
-            <Photo photo={sitePhotos.heroService} eager tone="light" className="flex-1 min-h-0 w-full" />
-            <Photo photo={sitePhotos.heroTalentHunt} eager className="flex-1 min-h-0 w-full" />
-          </div>
+        <div className="flex-[1_1_380px] flex justify-center">
+          {/* Chapter emblem: the largest element on screen, so it loads first. */}
+          <img
+            src="/brand/eta-omicron-720.webp"
+            srcSet="/brand/eta-omicron-360.webp 360w, /brand/eta-omicron-720.webp 720w"
+            sizes="(min-width: 768px) 480px, 80vw"
+            alt="Mighty Eta Omicron, 1947 — chapter emblem"
+            width="720"
+            height="666"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full max-w-[480px] h-auto"
+          />
         </div>
       </section>
 
