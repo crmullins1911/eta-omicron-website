@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
+import { intent } from '../lib/prefetch'
 
 const links = [
   { to: '/', label: 'Home', end: true },
@@ -22,7 +23,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-omega-purple sticky top-0 z-40 shadow-lg">
-      <nav className="container-page flex items-center justify-between h-16">
+      <nav className="container-page flex items-center justify-between h-16" aria-label="Main">
         <NavLink to="/" className="flex items-center gap-2 text-white font-display text-lg font-bold">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-omega-gold text-omega-purple-dark font-black">
             ΕΟ
@@ -34,6 +35,8 @@ export default function Navbar() {
           className="md:hidden text-white p-2"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
@@ -43,7 +46,7 @@ export default function Navbar() {
         <ul className="hidden md:flex items-center gap-1">
           {links.map((l) => (
             <li key={l.to}>
-              <NavLink to={l.to} end={l.end} className={linkClass}>
+              <NavLink to={l.to} end={l.end} className={linkClass} {...intent(l.to)}>
                 {l.label}
               </NavLink>
             </li>
@@ -52,10 +55,10 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <ul className="md:hidden bg-omega-purple-dark border-t border-white/10">
+        <ul id="mobile-menu" className="md:hidden bg-omega-purple-dark border-t border-white/10">
           {links.map((l) => (
             <li key={l.to}>
-              <NavLink to={l.to} end={l.end} className={linkClass} onClick={() => setOpen(false)}>
+              <NavLink to={l.to} end={l.end} className={linkClass} onClick={() => setOpen(false)} {...intent(l.to)}>
                 {l.label}
               </NavLink>
             </li>

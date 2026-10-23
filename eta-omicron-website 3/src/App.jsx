@@ -1,16 +1,20 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
+import {
+  Home,
+  About,
+  Events,
+  Media,
+  Committees,
+  CommitteeDetail,
+  BrothersLogin,
+  BrothersDashboard,
+  NotFound,
+} from './routes'
 
-import Home from './pages/Home'
-import About from './pages/About'
-import Events from './pages/Events'
-import Media from './pages/Media'
-import Committees from './pages/committees/Committees'
-import CommitteeDetail from './pages/committees/CommitteeDetail'
-import BrothersLogin from './pages/brothers/Login'
-import BrothersDashboard from './pages/brothers/Dashboard'
-import NotFound from './pages/NotFound'
+// Every page except Home is code-split (see src/routes.js), so a visitor only downloads the
+// JavaScript for the page they are looking at.
 
 export default function App() {
   return (
