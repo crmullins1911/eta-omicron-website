@@ -20,8 +20,8 @@ export default function CommitteeDetail() {
   if (!committee) {
     return (
       <div className="container-page py-24 text-center">
-        <p className="text-gray-500">Committee not found.</p>
-        <Link to="/committees" className="text-omega-purple underline font-semibold">
+        <p className="text-ink/70">Committee not found.</p>
+        <Link to="/committees" className="text-ink underline font-semibold">
           Back to Committees
         </Link>
       </div>
@@ -34,12 +34,12 @@ export default function CommitteeDetail() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Committees', to: '/committees' }, { label: committee.name }]} title={committee.name} subtitle={committee.description} />
 
       <section className="container-page py-14">
-        <h2 className="font-display text-2xl font-bold text-omega-purple mb-4">
+        <h2 className="font-display text-3xl font-semibold text-ink mb-4">
           Forms, Applications &amp; Posts
         </h2>
 
         {!loading && documents.length === 0 && (
-          <p className="text-gray-500 italic">
+          <p className="text-ink/70 italic">
             No documents posted yet. Committee members can add forms and applications here by
             uploading files to Supabase Storage and adding a row to the "committee_documents" table
             (or via an admin form in the Brothers Only dashboard).
@@ -48,19 +48,19 @@ export default function CommitteeDetail() {
 
         <ul className="space-y-3">
           {documents.map((d) => (
-            <li key={d.title} className="reveal p-4 rounded-lg border border-gray-200 bg-white shadow-sm flex justify-between items-center">
+            <li key={d.title} className="reveal p-4 rounded-lg border border-ink/10 bg-plum/60 flex justify-between items-center">
               <div>
-                <p className="text-xs uppercase text-omega-gold font-semibold">{d.category}</p>
+                <p className="text-xs uppercase text-gold font-semibold">{d.category}</p>
                 <p className="font-semibold">{d.title}</p>
               </div>
-              <a href={d.file_url} target="_blank" rel="noreferrer" data-track={`committee doc: ${d.title}`} className="text-omega-purple font-semibold underline">
+              <a href={d.file_url} target="_blank" rel="noreferrer" data-track={`committee doc: ${d.title}`} className="text-ink font-semibold underline">
                 Open
               </a>
             </li>
           ))}
         </ul>
 
-        <Link to="/committees" className="inline-block mt-8 text-omega-purple font-semibold underline">
+        <Link to="/committees" className="inline-block mt-8 text-ink font-semibold underline">
           &larr; Back to all committees
         </Link>
       </section>

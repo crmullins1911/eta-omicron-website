@@ -27,15 +27,15 @@ export default function Media() {
 
       <section className="container-page py-14" data-track-section="media">
         {source === 'fallback' && (
-          <p className="text-sm text-gray-400 mb-6 italic">
+          <p className="text-sm text-ink/60 mb-6 italic">
             Showing placeholder gallery items. Connect Supabase Storage + a "media_items" table to manage this live.
           </p>
         )}
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((m, i) => (
-            <figure key={m.url || m.title} className="reveal rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <div className="aspect-video bg-omega-purple/10 flex items-center justify-center text-omega-purple/50 text-sm">
+            <figure key={m.url || m.title} className="reveal rounded-lg overflow-hidden border border-ink/10 bg-plum/60">
+              <div className="aspect-video bg-plum flex items-center justify-center text-ink/50 text-sm">
                 {m.url ? (
                   m.type === 'video' ? (
                     <video src={m.url} controls preload="metadata" className="w-full h-full object-cover" />

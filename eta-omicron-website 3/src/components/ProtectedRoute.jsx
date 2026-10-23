@@ -10,7 +10,7 @@ export default function ProtectedRoute() {
 
   if (loading) {
     return (
-      <div className="container-page py-24 text-center text-omega-purple" role="status">
+      <div className="container-page py-24 text-center text-ink" role="status">
         Checking your sign-in...
       </div>
     )

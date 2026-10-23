@@ -43,10 +43,10 @@ export default function Login() {
       />
 
       <section className="container-page py-14 max-w-md">
-        <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 space-y-4">
-          <p className="text-sm text-gray-500">
+        <form onSubmit={handleSubmit} className="bg-plum/60 border border-ink/10 rounded-lg p-6 space-y-4">
+          <p className="text-sm text-ink/70">
             Use the same login you use for{' '}
-            <a href="https://app.etaomicron.org" className="text-omega-purple underline">
+            <a href="https://app.etaomicron.org" className="text-ink underline">
               app.etaomicron.org
             </a>
             .
@@ -60,7 +60,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-omega-purple"
+              className="w-full border border-ink/25 bg-night rounded-md text-ink placeholder:text-ink/45 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
 
@@ -72,16 +72,16 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-omega-purple"
+              className="w-full border border-ink/25 bg-night rounded-md text-ink placeholder:text-ink/45 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="text-sm text-red-300">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 rounded-md bg-omega-purple text-white font-semibold hover:bg-omega-purple-dark disabled:opacity-50"
+            className="w-full py-2.5 rounded-md bg-gold text-night font-semibold hover:bg-gold-light disabled:opacity-50"
           >
             {submitting ? 'Signing in...' : 'Sign In'}
           </button>

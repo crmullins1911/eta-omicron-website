@@ -55,13 +55,13 @@ export default function Events() {
 
       <section className="container-page py-14" data-track-section="events">
         {source === 'fallback' && !loading && (
-          <p className="text-sm text-gray-400 mb-6 italic">
+          <p className="text-sm text-ink/60 mb-6 italic">
             Showing placeholder events. Connect a Supabase "events" table to manage these live.
           </p>
         )}
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-          <div role="tablist" aria-label="Filter events" className="inline-flex rounded-lg bg-omega-purple/5 p-1">
+          <div role="tablist" aria-label="Filter events" className="inline-flex rounded-lg bg-plum/60 p-1">
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -71,7 +71,7 @@ export default function Events() {
                 onClick={() => setTab(t.id)}
                 data-track={`events tab: ${t.id}`}
                 className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
-                  tab === t.id ? 'bg-white text-omega-purple shadow-sm' : 'text-omega-purple/70 hover:text-omega-purple'
+                  tab === t.id ? 'bg-gold text-night' : 'text-ink/70 hover:text-ink'
                 }`}
               >
                 {t.label} <span className="text-xs opacity-60">{counts[t.id]}</span>
@@ -86,9 +86,9 @@ export default function Events() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search events"
-              className="w-full border border-gray-300 rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-omega-purple"
+              className="w-full border border-ink/25 bg-night rounded-md text-ink placeholder:text-ink/45 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
             />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/60" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
@@ -96,8 +96,8 @@ export default function Events() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-12 rounded-lg border border-dashed border-gray-300 bg-white">
-            <p className="text-gray-600">
+          <div className="text-center py-12 rounded-lg border border-dashed border-ink/25 bg-plum/60">
+            <p className="text-ink/75">
               {query
                 ? `No events match "${search}".`
                 : tab === 'upcoming'
@@ -105,7 +105,7 @@ export default function Events() {
                   : 'No events to show.'}
             </p>
             {tab === 'upcoming' && past.length > 0 && !query && (
-              <button type="button" onClick={() => setTab('past')} className="mt-3 text-omega-purple font-semibold underline">
+              <button type="button" onClick={() => setTab('past')} className="mt-3 text-ink font-semibold underline">
                 See past events
               </button>
             )}

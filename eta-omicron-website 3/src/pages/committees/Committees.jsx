@@ -18,11 +18,11 @@ export default function Committees() {
             key={c.slug}
             to={`/committees/${c.slug}`}
             {...intent(`/committees/${c.slug}`)}
-            className="reveal p-6 rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-omega-gold transition"
+            className="reveal p-6 rounded-lg border border-ink/10 bg-plum/60 hover:border-gold transition"
           >
-            <h3 className="font-display text-xl font-bold text-omega-purple">{c.name}</h3>
-            <p className="text-gray-600 mt-2">{c.description}</p>
-            <span className="inline-block mt-4 text-sm font-semibold text-omega-purple underline">
+            <h3 className="font-display text-2xl font-semibold text-ink">{c.name}</h3>
+            <p className="text-ink/75 mt-2">{c.description}</p>
+            <span className="inline-block mt-4 text-sm font-semibold text-ink underline">
               View committee page &rarr;
             </span>
           </Link>
