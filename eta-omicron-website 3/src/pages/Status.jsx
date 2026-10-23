@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import PageBanner from '../components/PageBanner'
 import { SUPABASE_URL, supabaseConfigured, supabaseHeaders } from '../lib/rest'
-import { settingFixes } from '../lib/supabaseConfig'
+import { settingFixes, describeKey, SUPABASE_ANON_KEY } from '../lib/supabaseConfig'
 import { clearCache, getSeed } from '../lib/cache'
 
 // Hidden diagnostics page (/status): checks every Supabase request the website makes, live, and
@@ -41,6 +41,7 @@ export default function Status() {
   const [running, setRunning] = useState(false)
   const [cleared, setCleared] = useState(false)
   const projectRef = SUPABASE_URL ? safeHost(SUPABASE_URL) : null
+  const keyInfo = describeKey(SUPABASE_ANON_KEY, SUPABASE_URL)
   const [seed, setSeed] = useState(null) // filled in after load, so the prebuilt page matches
 
   const run = async () => {
@@ -85,7 +86,7 @@ export default function Status() {
     setCleared(true)
   }
 
-  const report = buildReport({ projectRef, seed, results })
+  const report = buildReport({ projectRef, seed, results, keyInfo })
 
   return (
     <div>
@@ -95,7 +96,8 @@ export default function Status() {
         <div className="rounded-lg border border-ink/15 bg-plum/40 p-6 space-y-2">
           <p className="eyebrow">Connection settings (from Vercel)</p>
           <Row label="Supabase project" value={projectRef || 'NOT SET'} bad={!projectRef} />
-          <Row label="Public (anon) key" value={supabaseConfigured ? 'present' : 'MISSING'} bad={!supabaseConfigured} />
+          <Row label="Public key" value={keyInfo.kind} bad={!keyInfo.ok} />
+          {keyInfo.note && <p className={`text-sm ${keyInfo.ok ? 'text-ink/70' : 'text-red-300'}`}>{keyInfo.note}</p>}
           <Row
             label="Data baked in at last deploy"
             value={
@@ -222,7 +224,12 @@ async function check(c) {
       sample: first ? String(first).slice(0, 80) : null,
     }
   }
-  return { ok: false, summary: `error ${res.status}${body?.code ? ` · ${body.code}` : ''}`, advice: errorAdvice(c, res.status, body) }
+  return {
+    ok: false,
+    summary: `error ${res.status}${body?.code ? ` · ${body.code}` : ''}`,
+    detail: String(body?.message || body?.msg || body?.error || body?.hint || '').slice(0, 140),
+    advice: errorAdvice(c, res.status, body),
+  }
 }
 
 function emptyAdvice(id) {
@@ -268,12 +275,12 @@ function safeHost(url) {
   }
 }
 
-function buildReport({ projectRef, seed, results }) {
+function buildReport({ projectRef, seed, results, keyInfo }) {
   const lines = [
     `Eta Omicron website status — ${new Date().toISOString()}`,
     `Page: ${typeof location !== 'undefined' ? location.host : ''}`,
     `Supabase project: ${projectRef || 'NOT SET'}`,
-    `Anon key: ${supabaseConfigured ? 'present' : 'MISSING'}`,
+    `Key: ${keyInfo.kind}${keyInfo.note && !keyInfo.ok ? ` — ${keyInfo.note}` : ''}`,
     `Settings repaired: ${settingFixes.length ? settingFixes.join('; ') : 'none'}`,
     `Baked-in data: ${seed?.builtAt ? new Date(seed.builtAt).toISOString() : 'none'} (${Object.keys(seed?.data || {}).join(', ') || 'no live sets'})`,
     '',

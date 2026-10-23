@@ -10,14 +10,14 @@
 //
 // This file runs in the browser and at build time (scripts/prerender.mjs), where Node's fetch is used.
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY, supabaseConfigured } from './supabaseConfig'
+import { SUPABASE_URL, SUPABASE_ANON_KEY, supabaseConfigured, KEY_IS_JWT } from './supabaseConfig'
 
 export { SUPABASE_URL, SUPABASE_ANON_KEY, supabaseConfigured }
 
 export function supabaseHeaders(extra = {}) {
   return {
     apikey: SUPABASE_ANON_KEY,
-    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    ...(KEY_IS_JWT ? { Authorization: `Bearer ${SUPABASE_ANON_KEY}` } : {}),
     ...extra,
   }
 }
