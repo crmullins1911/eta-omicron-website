@@ -26,10 +26,14 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-night/95 backdrop-blur border-b border-gold/35">
       <nav className="container-page flex items-center justify-between gap-3 py-3.5" aria-label="Main">
         <NavLink to="/" className="flex items-center gap-3.5 text-ink" {...intent('/')}>
-          {/* Replace with the chapter crest image when available. */}
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold font-display text-sm text-gold">
-            ΕΟ
-          </span>
+          <img
+            src="/brand/crest-96.png"
+            alt="Omega Psi Phi Fraternity, Inc. crest"
+            width="44"
+            height="44"
+            fetchPriority="high"
+            className="h-11 w-11 rounded-full"
+          />
           <span className="font-display text-[22px] font-semibold">Eta Omicron</span>
         </NavLink>
 

@@ -33,7 +33,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-plum/60 focus:px-3 focus:py-2 focus:rounded">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-gold focus:text-night focus:px-3 focus:py-2 focus:rounded">
         Skip to content
       </a>
       <Navbar />

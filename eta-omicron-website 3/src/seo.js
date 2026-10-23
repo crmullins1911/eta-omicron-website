@@ -107,7 +107,7 @@ function organization() {
     name: ORG_NAME,
     alternateName: 'Eta Omicron Chapter',
     url: SITE_URL + '/',
-    logo: SITE_URL + '/favicon.svg',
+    logo: SITE_URL + '/brand/crest-192.png',
     email: 'info@etaomicron.org',
     parentOrganization: { '@type': 'Organization', name: 'Omega Psi Phi Fraternity, Inc.' },
   }
@@ -147,6 +147,8 @@ export function headTagsHtml(pathname, data) {
     `<meta property="og:title" content="${esc(m.title)}" />`,
     `<meta property="og:description" content="${esc(m.description)}" />`,
     m.canonical && `<meta property="og:url" content="${esc(m.canonical)}" />`,
+    `<meta property="og:image" content="${SITE_URL}/brand/crest-192.png" />`,
+    `<meta property="og:image:alt" content="Omega Psi Phi Fraternity, Inc. crest" />`,
     `<meta name="twitter:card" content="summary" />`,
     `<meta name="twitter:title" content="${esc(m.title)}" />`,
     `<meta name="twitter:description" content="${esc(m.description)}" />`,
