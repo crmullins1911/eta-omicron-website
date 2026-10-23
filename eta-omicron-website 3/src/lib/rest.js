@@ -10,9 +10,9 @@
 //
 // This file runs in the browser and at build time (scripts/prerender.mjs), where Node's fetch is used.
 
-export const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || '').replace(/\/$/, '')
-export const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-export const supabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY)
+import { SUPABASE_URL, SUPABASE_ANON_KEY, supabaseConfigured } from './supabaseConfig'
+
+export { SUPABASE_URL, SUPABASE_ANON_KEY, supabaseConfigured }
 
 export function supabaseHeaders(extra = {}) {
   return {
