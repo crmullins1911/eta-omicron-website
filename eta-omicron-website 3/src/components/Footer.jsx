@@ -36,6 +36,8 @@ export default function Footer() {
             <li><Link to="/events" className="hover:text-gold-light" {...intent('/events')}>Events</Link></li>
             <li><Link to="/committees" className="hover:text-gold-light" {...intent('/committees')}>Committees</Link></li>
             <li><Link to="/media" className="hover:text-gold-light" {...intent('/media')}>Media</Link></li>
+            <li><Link to="/news" className="hover:text-gold-light" {...intent('/news')}>News</Link></li>
+            <li><Link to="/chapter-house" className="hover:text-gold-light" {...intent('/chapter-house')}>Chapter House</Link></li>
           </ul>
         </div>
 

@@ -9,11 +9,13 @@ import { intent } from '../lib/prefetch'
 import { downloadIcs } from '../lib/calendar'
 import { eventSlug } from '../seo'
 import { sitePhotos } from '../data/sitePhotos'
+import { news } from '../data/news'
+import ChapterVisual from '../components/ChapterVisual'
 
 // "Editorial Night" home page.
 // Render order on first load:
 //   1. Hero: critical, painted from the static HTML immediately.
-//   2. Events + news, then the Talent Hunt feature: in the HTML for visitors and search engines,
+//   2. Events + news, the chapter photo/video band, then quick links: in the HTML for visitors and search engines,
 //      made interactive when scrolled near (LazyHydrate). Events refresh in the background.
 
 function useUpcoming(limit) {
@@ -84,13 +86,16 @@ export default function Home() {
 
       <LazyHydrate id="home-news" as="section" className="border-y border-gold/35" data-track-section="home-news" component={EventsAndNews} />
 
-      <LazyHydrate id="home-feature" as="section" className="cv-auto" data-track-section="home-feature" component={TalentHunt} />
+      <LazyHydrate id="home-visual" as="section" className="container-page pt-20" data-track-section="home-visual" component={ChapterVisual} />
+
+      <LazyHydrate id="home-explore" as="section" className="cv-auto" data-track-section="home-explore" component={QuickLinks} />
     </div>
   )
 }
 
 function EventsAndNews() {
   const upcoming = useUpcoming(3)
+  const latest = news[0]
   return (
     <div className="container-page py-20 flex flex-wrap gap-14">
       <div className="flex-[999_1_560px] min-w-0">
@@ -140,50 +145,81 @@ function EventsAndNews() {
         <p className="eyebrow">From the chapter</p>
         <h2 className="mt-2 mb-6 font-display text-4xl md:text-[42px] font-semibold">News</h2>
         <Photo photo={sitePhotos.news} className="h-[200px] w-full" />
-        <h3 className="mt-5 font-display text-[26px] font-semibold leading-tight">Welcome to the new Eta Omicron website</h3>
-        <p className="mt-2 leading-relaxed text-ink/75">
-          Chapter news, announcements and updates will appear here. Brothers can also find member resources in the
-          Brothers Only area.
-        </p>
+        {latest ? (
+          <>
+            <h3 className="mt-5 font-display text-[26px] font-semibold leading-tight">
+              <Link to={`/news#${latest.slug}`} {...intent('/news')} className="hover:text-gold-light">
+                {latest.title}
+              </Link>
+            </h3>
+            <p className="mt-2 leading-relaxed text-ink/75">{latest.summary}</p>
+          </>
+        ) : (
+          <p className="mt-5 leading-relaxed text-ink/75">No news has been posted yet.</p>
+        )}
+        <Link to="/news" {...intent('/news')} className="inline-block mt-4 font-semibold text-gold-light hover:text-gold">
+          All news →
+        </Link>
       </aside>
     </div>
   )
 }
 
-function TalentHunt() {
+const quickLinks = [
+  {
+    to: '/about#history',
+    page: '/about',
+    eyebrow: 'Since 1947',
+    title: 'About & History',
+    text: 'Who we are, where we come from and the principles that guide us.',
+  },
+  {
+    to: '/about#leadership',
+    page: '/about',
+    eyebrow: 'Leadership',
+    title: 'Executive Committee',
+    text: 'Meet the officers who lead the chapter this year.',
+  },
+  {
+    to: '/news',
+    page: '/news',
+    eyebrow: 'Updates',
+    title: 'News & Blog',
+    text: 'Announcements, stories and recaps from chapter events.',
+  },
+  {
+    to: '/chapter-house',
+    page: '/chapter-house',
+    eyebrow: 'Visit',
+    title: 'Chapter House',
+    text: 'Location, hours, meetings and how to reach us.',
+  },
+]
+
+function QuickLinks() {
   return (
-    <div className="container-page py-24 flex flex-wrap gap-12">
-      <div className="flex-[1_1_320px]">
-        <p className="eyebrow">Signature program</p>
-        <h2 className="mt-2 font-display text-5xl md:text-[52px] font-semibold leading-[1.05]">
-          The Talent
-          <br />
-          <em className="text-gold">Hunt</em>
-        </h2>
-      </div>
-      <div className="flex-[2_1_520px] min-w-0">
-        <p className="text-xl md:text-[21px] leading-relaxed text-ink/85">
-          Each year our chapter&apos;s Talent Hunt invites local high school students to compete for scholarships in
-          music, dance, spoken word and the visual arts.
-        </p>
-        <div className="mt-7 flex flex-wrap gap-3.5">
-          <Link
-            to="/committees/talent-hunt"
-            {...intent('/committees/talent-hunt')}
-            data-track="home: talent hunt apply"
-            className="rounded-full bg-gold px-6 py-3.5 font-semibold text-night hover:bg-gold-light"
-          >
-            Apply or nominate a student
-          </Link>
-          <a
-            href="mailto:info@etaomicron.org?subject=Sponsoring%20a%20Talent%20Hunt%20scholarship"
-            data-track="home: sponsor scholarship"
-            className="rounded-full border border-ink/45 px-6 py-3.5 font-semibold text-ink hover:border-gold-light hover:text-gold-light"
-          >
-            Sponsor a scholarship
-          </a>
-        </div>
-      </div>
+    <div className="container-page py-20">
+      <p className="eyebrow">Explore the chapter</p>
+      <h2 className="mt-2 mb-8 font-display text-4xl md:text-[42px] font-semibold">Find your way</h2>
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {quickLinks.map((l) => (
+          <li key={l.to}>
+            <Link
+              to={l.to}
+              {...intent(l.page)}
+              data-track={`home quick link: ${l.title}`}
+              className="reveal group flex h-full flex-col rounded-lg border border-ink/15 bg-plum/40 p-6 transition-colors hover:border-gold hover:bg-plum/70"
+            >
+              <span className="eyebrow">{l.eyebrow}</span>
+              <span className="mt-3 font-display text-2xl font-semibold text-ink">{l.title}</span>
+              <span className="mt-2 flex-1 leading-relaxed text-ink/75">{l.text}</span>
+              <span className="mt-5 font-semibold text-gold-light transition-transform group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
