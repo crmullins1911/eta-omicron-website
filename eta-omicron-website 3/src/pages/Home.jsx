@@ -9,7 +9,7 @@ import { intent } from '../lib/prefetch'
 import { downloadIcs } from '../lib/calendar'
 import { eventSlug } from '../seo'
 import { sitePhotos } from '../data/sitePhotos'
-import { news } from '../data/news'
+import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
 
 // "Editorial Night" home page.
@@ -95,7 +95,7 @@ export default function Home() {
 
 function EventsAndNews() {
   const upcoming = useUpcoming(3)
-  const latest = news[0]
+  const latest = useNewsFeed()[0]
   return (
     <div className="container-page py-20 flex flex-wrap gap-14">
       <div className="flex-[999_1_560px] min-w-0">
@@ -144,15 +144,20 @@ function EventsAndNews() {
       <aside className="flex-[1_1_320px]">
         <p className="eyebrow">From the chapter</p>
         <h2 className="mt-2 mb-6 font-display text-4xl md:text-[42px] font-semibold">News</h2>
-        <Photo photo={sitePhotos.news} className="h-[200px] w-full" />
+        {latest?.image ? (
+          <img src={latest.image} alt="" loading="lazy" decoding="async" className="h-[200px] w-full rounded object-cover" />
+        ) : (
+          <Photo photo={sitePhotos.news} className="h-[200px] w-full" />
+        )}
         {latest ? (
           <>
             <h3 className="mt-5 font-display text-[26px] font-semibold leading-tight">
               <Link to={`/news#${latest.slug}`} {...intent('/news')} className="hover:text-gold-light">
-                {latest.title}
+                {headlineFor(latest)}
               </Link>
             </h3>
-            <p className="mt-2 leading-relaxed text-ink/75">{latest.summary}</p>
+            {latest.date && <p className="mt-1 text-sm text-ink/60">{formatNewsDate(latest, { month: 'long', day: 'numeric' })}</p>}
+            {latest.summary && <p className="mt-2 leading-relaxed text-ink/75">{latest.summary}</p>}
           </>
         ) : (
           <p className="mt-5 leading-relaxed text-ink/75">No news has been posted yet.</p>

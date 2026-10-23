@@ -45,3 +45,24 @@ export async function restSelect(table, params = {}, { signal, timeoutMs = 8000 
     clearTimeout(timer)
   }
 }
+
+/**
+ * Signed links for files in a private storage bucket (e.g. app feed photos). Only works for files
+ * the database lets the public see; others come back without a link. Links last a year so pages
+ * baked at build time keep working; they are refreshed whenever the data is.
+ */
+export async function restSignUrls(bucket, paths, { expiresIn = 60 * 60 * 24 * 365 } = {}) {
+  if (!supabaseConfigured || paths.length === 0) return {}
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/sign/${bucket}`, {
+    method: 'POST',
+    headers: supabaseHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ expiresIn, paths }),
+  })
+  if (!res.ok) return {}
+  const rows = await res.json()
+  const out = {}
+  for (const r of rows || []) {
+    if (r?.path && r?.signedURL && !r.error) out[r.path] = encodeURI(`${SUPABASE_URL}/storage/v1${r.signedURL}`)
+  }
+  return out
+}
