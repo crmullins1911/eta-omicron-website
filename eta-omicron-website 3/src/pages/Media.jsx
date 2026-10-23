@@ -1,75 +1,79 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import PageBanner from '../components/PageBanner'
-import { supabase } from '../lib/supabaseClient'
-import { mediaItems as placeholderMedia } from '../data/placeholders'
+import useCachedQuery from '../hooks/useCachedQuery'
+import { mediaQuery } from '../lib/queries'
 
-// Photos/videos are expected in a Supabase Storage bucket called "media"
-// with metadata tracked in a "media_items" table (columns: title, type
-// ["image"|"video"], url). Falls back to placeholder tiles otherwise.
+// Photos/videos live in a Supabase Storage bucket ("media") with metadata in the "media_items"
+// table (title, type ["image"|"video"], url). Falls back to placeholder tiles when empty.
+//
+// Images load lazily as they approach the viewport; the first row loads eagerly. The full-screen
+// viewer is a separate code chunk that only downloads when someone opens a photo.
+
+const Lightbox = lazy(() => import('../components/Lightbox'))
+const EAGER = 3
 
 export default function Media() {
-  const [items, setItems] = useState(placeholderMedia)
-  const [usingFallback, setUsingFallback] = useState(true)
-
-  useEffect(() => {
-    let active = true
-
-    async function loadMedia() {
-      const { data, error } = await supabase
-        .from('media_items')
-        .select('title, type, url')
-        .order('created_at', { ascending: false })
-
-      if (!active) return
-      if (error || !data || data.length === 0) {
-        setUsingFallback(true)
-        setItems(placeholderMedia)
-      } else {
-        setUsingFallback(false)
-        setItems(data)
-      }
-    }
-
-    loadMedia()
-    return () => {
-      active = false
-    }
-  }, [])
+  const { data: items, source } = useCachedQuery(mediaQuery)
+  const [open, setOpen] = useState(null) // index of the item being viewed
+  const viewable = items.filter((m) => m.url)
 
   return (
     <div>
       <PageBanner
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Media' }]} title="Media" subtitle="Photos and videos from our chapter events." />
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Media' }]}
+        title="Media"
+        subtitle="Photos and videos from our chapter events."
+      />
 
-      <section className="container-page py-14">
-        {usingFallback && (
+      <section className="container-page py-14" data-track-section="media">
+        {source === 'fallback' && (
           <p className="text-sm text-gray-400 mb-6 italic">
-            Showing placeholder gallery items. Connect Supabase Storage + a "media_items" table to
-            manage this live.
+            Showing placeholder gallery items. Connect Supabase Storage + a "media_items" table to manage this live.
           </p>
         )}
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((m) => (
-            <div key={m.title} className="rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm">
+          {items.map((m, i) => (
+            <figure key={m.url || m.title} className="reveal rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm">
               <div className="aspect-video bg-omega-purple/10 flex items-center justify-center text-omega-purple/50 text-sm">
                 {m.url ? (
                   m.type === 'video' ? (
-                    <video src={m.url} controls className="w-full h-full object-cover" />
+                    <video src={m.url} controls preload="metadata" className="w-full h-full object-cover" />
                   ) : (
-                    <img src={m.url} alt={m.title} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      className="w-full h-full cursor-zoom-in"
+                      onClick={() => setOpen(viewable.indexOf(m))}
+                      onMouseEnter={() => import('../components/Lightbox')}
+                      aria-label={`View ${m.title}`}
+                      data-track="media: open photo"
+                    >
+                      <img
+                        src={m.url}
+                        alt={m.title}
+                        crossOrigin="anonymous"
+                        loading={i < EAGER ? 'eager' : 'lazy'}
+                        fetchPriority={i === 0 ? 'high' : undefined}
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
                   )
                 ) : (
                   <span>{m.type === 'video' ? 'Video placeholder' : 'Photo placeholder'}</span>
                 )}
               </div>
-              <div className="p-3">
-                <p className="font-semibold text-sm">{m.title}</p>
-              </div>
-            </div>
+              <figcaption className="p-3 font-semibold text-sm">{m.title}</figcaption>
+            </figure>
           ))}
         </div>
       </section>
+
+      {open !== null && (
+        <Suspense fallback={null}>
+          <Lightbox items={viewable} index={open} onChange={setOpen} onClose={() => setOpen(null)} />
+        </Suspense>
+      )}
     </div>
   )
 }

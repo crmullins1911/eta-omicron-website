@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import PageBanner from '../../components/PageBanner'
-import { supabase } from '../../lib/supabaseClient'
+import useCachedQuery from '../../hooks/useCachedQuery'
+import { committeeDocsQuery } from '../../lib/queries'
 import { committees } from '../../data/placeholders'
 
 // Documents/forms for a committee are expected in a Supabase table called
@@ -13,28 +14,8 @@ import { committees } from '../../data/placeholders'
 export default function CommitteeDetail() {
   const { slug } = useParams()
   const committee = committees.find((c) => c.slug === slug)
-  const [documents, setDocuments] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    let active = true
-
-    async function loadDocs() {
-      const { data, error } = await supabase
-        .from('committee_documents')
-        .select('title, file_url, category')
-        .eq('committee_slug', slug)
-
-      if (!active) return
-      setDocuments(error || !data ? [] : data)
-      setLoading(false)
-    }
-
-    loadDocs()
-    return () => {
-      active = false
-    }
-  }, [slug])
+  const query = useMemo(() => committeeDocsQuery(slug), [slug])
+  const { data: documents, loading } = useCachedQuery(query)
 
   if (!committee) {
     return (
@@ -67,12 +48,12 @@ export default function CommitteeDetail() {
 
         <ul className="space-y-3">
           {documents.map((d) => (
-            <li key={d.title} className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm flex justify-between items-center">
+            <li key={d.title} className="reveal p-4 rounded-lg border border-gray-200 bg-white shadow-sm flex justify-between items-center">
               <div>
                 <p className="text-xs uppercase text-omega-gold font-semibold">{d.category}</p>
                 <p className="font-semibold">{d.title}</p>
               </div>
-              <a href={d.file_url} target="_blank" rel="noreferrer" className="text-omega-purple font-semibold underline">
+              <a href={d.file_url} target="_blank" rel="noreferrer" data-track={`committee doc: ${d.title}`} className="text-omega-purple font-semibold underline">
                 Open
               </a>
             </li>

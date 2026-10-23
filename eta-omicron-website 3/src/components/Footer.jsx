@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
+import { intent } from '../lib/prefetch'
+
 export default function Footer() {
   return (
-    <footer className="bg-omega-purple-dark text-white/80 mt-16">
+    <footer className="bg-omega-purple-dark text-white/80 mt-16" data-track-section="footer">
       <div className="container-page py-10 grid gap-8 md:grid-cols-3 text-sm">
         <div>
           <h3 className="text-white font-display text-lg mb-2">Eta Omicron Chapter</h3>
@@ -12,10 +15,10 @@ export default function Footer() {
         <div>
           <h4 className="text-omega-gold font-semibold mb-2">Quick Links</h4>
           <ul className="space-y-1">
-            <li><a href="/about" className="hover:text-white">About Us</a></li>
-            <li><a href="/events" className="hover:text-white">Events</a></li>
-            <li><a href="/committees" className="hover:text-white">Committees</a></li>
-            <li><a href="/media" className="hover:text-white">Media</a></li>
+            <li><Link to="/about" className="hover:text-white" {...intent('/about')}>About Us</Link></li>
+            <li><Link to="/events" className="hover:text-white" {...intent('/events')}>Events</Link></li>
+            <li><Link to="/committees" className="hover:text-white" {...intent('/committees')}>Committees</Link></li>
+            <li><Link to="/media" className="hover:text-white" {...intent('/media')}>Media</Link></li>
           </ul>
         </div>
         <div>

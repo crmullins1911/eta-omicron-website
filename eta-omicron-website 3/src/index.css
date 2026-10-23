@@ -21,3 +21,52 @@ body {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 }
+
+/* ---- Phased rendering helpers ------------------------------------------------------------- */
+
+/* Below-the-fold blocks: the browser skips layout and paint work until they near the viewport. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* Loading placeholder shown while a page's code chunk downloads (rare, thanks to prefetching). */
+.skeleton {
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, #ece9f1 25%, #f5f3f8 50%, #ece9f1 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Cards ease in as they scroll into view. Pure CSS (scroll-driven animations), so it costs no
+   JavaScript, and content is always visible in browsers without support or with reduced motion. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

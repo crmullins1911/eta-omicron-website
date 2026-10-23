@@ -1,111 +1,127 @@
-import { useEffect, useState } from 'react'
+import { useDeferredValue, useMemo, useState } from 'react'
 import PageBanner from '../components/PageBanner'
-import { supabase } from '../lib/supabaseClient'
-import { events as placeholderEvents } from '../data/placeholders'
+import EventCard from '../components/EventCard'
+import Seo from '../components/Seo'
+import useCachedQuery from '../hooks/useCachedQuery'
+import useNow, { startOfDay, toDate } from '../hooks/useNow'
+import { eventsQuery } from '../lib/queries'
 
-// Events come from the "events" table the member app (app.etaomicron.org) uses. The member app
-// shows every event to signed-in brothers; this public page shows only the events marked
-// on_website = true (a Supabase policy lets visitors read just those). Mark events from the
-// member app's data, or ask Jarvis in the Command Center ("put the banquet on the website").
+// Events come from the "events" table the member app (app.etaomicron.org) uses. This public page
+// shows only events marked on_website = true (a Supabase policy lets visitors read just those).
+// Mark events from the member app's data, or ask Jarvis in the Command Center.
 //
-// If Supabase can't be reached, the page falls back to the placeholder list in
-// src/data/placeholders.js so it always renders something.
+// The list is baked into the page at build time, cached on the visitor's device, and refreshed in
+// the background (src/lib/cache.js). If Supabase can't be reached and nothing is cached, it falls
+// back to the placeholder list in src/data/placeholders.js.
+
+const TABS = [
+  { id: 'upcoming', label: 'Upcoming' },
+  { id: 'past', label: 'Past' },
+  { id: 'all', label: 'All' },
+]
 
 export default function Events() {
-  const [events, setEvents] = useState(placeholderEvents)
-  const [usingFallback, setUsingFallback] = useState(true)
-  const [loading, setLoading] = useState(true)
+  const { data: events, source, loading } = useCachedQuery(eventsQuery)
+  const now = useNow()
+  const [tab, setTab] = useState('upcoming')
+  const [search, setSearch] = useState('')
+  const query = useDeferredValue(search.trim().toLowerCase())
 
-  useEffect(() => {
-    let active = true
+  const { upcoming, past } = useMemo(() => {
+    const today = startOfDay(now)
+    const up = []
+    const done = []
+    for (const e of events) (toDate(e.date).getTime() >= today ? up : done).push(e)
+    done.reverse() // most recent first
+    return { upcoming: up, past: done }
+  }, [events, now])
 
-    async function loadEvents() {
-      const { data, error } = await supabase
-        .from('events')
-        .select('title, event_date, event_time, location, description')
-        .eq('on_website', true)
-        .order('event_date', { ascending: true })
-
-      if (!active) return
-
-      if (error || !data) {
-        setUsingFallback(true)
-        setEvents(placeholderEvents)
-      } else {
-        setUsingFallback(false)
-        setEvents(
-          data.map((e) => ({
-            title: e.title,
-            date: e.event_date,
-            time: e.event_time,
-            location: e.location,
-            description: e.description,
-          }))
-        )
-      }
-      setLoading(false)
-    }
-
-    loadEvents()
-    return () => {
-      active = false
-    }
-  }, [])
+  const list = tab === 'upcoming' ? upcoming : tab === 'past' ? past : [...upcoming, ...past]
+  const filtered = query
+    ? list.filter((e) => [e.title, e.location, e.description].filter(Boolean).join(' ').toLowerCase().includes(query))
+    : list
+  const next = upcoming[0]
+  const daysAway = next ? Math.round((toDate(next.date).getTime() - startOfDay(now)) / 86400000) : null
+  const counts = { upcoming: upcoming.length, past: past.length, all: events.length }
 
   return (
     <div>
+      <Seo path="/events" data={{ events: upcoming }} meta={false} />
       <PageBanner
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]} title="Events" subtitle="Everything happening with the chapter this year." />
+        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]}
+        title="Events"
+        subtitle="Everything happening with the chapter this year."
+      />
 
-      <section className="container-page py-14">
-        {usingFallback && !loading && (
+      <section className="container-page py-14" data-track-section="events">
+        {source === 'fallback' && !loading && (
           <p className="text-sm text-gray-400 mb-6 italic">
             Showing placeholder events. Connect a Supabase "events" table to manage these live.
           </p>
         )}
 
-        {!usingFallback && !loading && events.length === 0 && (
-          <p className="text-gray-600">No events are posted yet. Check back soon.</p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+          <div role="tablist" aria-label="Filter events" className="inline-flex rounded-lg bg-omega-purple/5 p-1">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                role="tab"
+                type="button"
+                aria-selected={tab === t.id}
+                onClick={() => setTab(t.id)}
+                data-track={`events tab: ${t.id}`}
+                className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors ${
+                  tab === t.id ? 'bg-white text-omega-purple shadow-sm' : 'text-omega-purple/70 hover:text-omega-purple'
+                }`}
+              >
+                {t.label} <span className="text-xs opacity-60">{counts[t.id]}</span>
+              </button>
+            ))}
+          </div>
+
+          <label className="relative block sm:w-64">
+            <span className="sr-only">Search events</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search events"
+              className="w-full border border-gray-300 rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-omega-purple"
+            />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+            </svg>
+          </label>
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="text-center py-12 rounded-lg border border-dashed border-gray-300 bg-white">
+            <p className="text-gray-600">
+              {query
+                ? `No events match "${search}".`
+                : tab === 'upcoming'
+                  ? 'No upcoming events are posted yet. Check back soon.'
+                  : 'No events to show.'}
+            </p>
+            {tab === 'upcoming' && past.length > 0 && !query && (
+              <button type="button" onClick={() => setTab('past')} className="mt-3 text-omega-purple font-semibold underline">
+                See past events
+              </button>
+            )}
+          </div>
         )}
 
         <div className="space-y-4">
-          {events.map((e) => (
-            <article
-              key={e.title + e.date}
-              className="p-5 rounded-lg border border-gray-200 bg-white shadow-sm flex flex-col sm:flex-row sm:items-center gap-4"
-            >
-              <div className="shrink-0 w-24 text-center">
-                <div className="rounded-md bg-omega-purple text-white py-2">
-                  <p className="text-xs uppercase">{formatMonth(e.date)}</p>
-                  <p className="text-xl font-bold">{formatDay(e.date)}</p>
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg text-omega-purple">{e.title}</h3>
-                <p className="text-sm text-gray-500">{[e.time, e.location].filter(Boolean).join(', ')}</p>
-                {e.description && <p className="text-gray-600 mt-1">{e.description}</p>}
-              </div>
-            </article>
-          ))}
+          {filtered.map((e) => {
+            const isPast = toDate(e.date).getTime() < startOfDay(now)
+            const isNext = e === next && !query
+            return (
+              <EventCard key={e.title + e.date} event={e} past={isPast} highlight={isNext} daysAway={isNext ? daysAway : null} />
+            )
+          })}
         </div>
       </section>
     </div>
   )
-}
-
-// A date-only string like "2026-11-15" is read by new Date() as midnight UTC, which is still the
-// day before in the United States. Read it as a local calendar date instead.
-function toDate(dateStr) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr || ''))
-  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(dateStr)
-}
-
-function formatMonth(dateStr) {
-  const d = toDate(dateStr)
-  return isNaN(d) ? '' : d.toLocaleString('en-US', { month: 'short' })
-}
-
-function formatDay(dateStr) {
-  const d = toDate(dateStr)
-  return isNaN(d) ? '' : d.getDate()
 }

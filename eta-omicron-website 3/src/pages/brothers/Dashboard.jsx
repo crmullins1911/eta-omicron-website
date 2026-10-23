@@ -1,5 +1,9 @@
+import { lazy, Suspense } from 'react'
 import PageBanner from '../../components/PageBanner'
 import { useAuth } from '../../context/AuthContext'
+import LazyMount from '../../components/LazyMount'
+
+const SiteHealth = lazy(() => import('../../components/SiteHealth'))
 
 // This is the landing page for authenticated members. Add sections here
 // for financial statements, dues status, meeting minutes, etc. by
@@ -42,6 +46,14 @@ export default function Dashboard() {
               Placeholder &mdash; list recent meeting minutes and chapter documents here for members only.
             </p>
           </div>
+        </div>
+
+        <div className="mt-6">
+          <LazyMount minHeight={360}>
+            <Suspense fallback={<div className="skeleton h-80" />}>
+              <SiteHealth />
+            </Suspense>
+          </LazyMount>
         </div>
 
         <p className="mt-8 text-sm text-gray-400">
