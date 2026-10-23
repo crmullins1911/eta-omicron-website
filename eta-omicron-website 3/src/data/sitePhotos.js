@@ -3,8 +3,5 @@
 // Always fill in `alt` with a short description of the photo for screen readers and search engines.
 
 export const sitePhotos = {
-  heroPortrait: { src: '', alt: '', fallback: 'ΕΟ' },
-  heroService: { src: '', alt: '', fallback: 'Uplift' },
-  heroTalentHunt: { src: '', alt: '', fallback: 'Talent Hunt' },
   news: { src: '', alt: '', fallback: 'Chapter News' },
 }

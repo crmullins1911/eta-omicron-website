@@ -12,6 +12,15 @@ export default function Footer() {
     <footer className="mt-24 bg-night-deep border-t border-gold/35" data-track-section="footer">
       <div className="container-page py-14 grid gap-10 md:grid-cols-[2fr_1fr_1fr]">
         <div>
+          <img
+            src="/brand/eta-omicron-360.webp"
+            alt=""
+            width="96"
+            height="89"
+            loading="lazy"
+            decoding="async"
+            className="mb-4 h-[89px] w-24"
+          />
           <p className="font-display text-2xl font-semibold text-ink">Eta Omicron Chapter</p>
           <p className="mt-2 text-ink/70">Omega Psi Phi Fraternity, Inc.</p>
           <p className="mt-1 text-ink/70">
