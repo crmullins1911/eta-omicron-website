@@ -15,31 +15,59 @@ export const history = `Eta Omicron Chapter of Omega Psi Phi Fraternity, Inc. ha
 community through the Cardinal Principles of Manhood, Scholarship, Perseverance, and Uplift.
 Replace this paragraph with your chapter's founding date, milestones, and notable achievements.`
 
+// Chapter committees. Each gets its own page at /committees/<slug> for forms, applications and posts.
+// Keep a committee's slug the same once published: it is the page address and links documents to it.
 export const committees = [
+  {
+    slug: 'achievement-week',
+    name: "Achievement Week / Founders' Day Committee",
+    description: 'Coordinates national recognition programs and awards for contributions to the community.',
+  },
   {
     slug: 'social-action',
     name: 'Social Action Committee',
-    description: 'Coordinates community service, voter education, and civic engagement initiatives.',
+    description: 'Implements community outreach, civic engagement, and social awareness programs.',
+  },
+  {
+    slug: 'health-initiatives',
+    name: 'Health Initiatives Committee',
+    description:
+      'Manages health-focused programming, including blood drives and awareness campaigns (such as the Charles Drew Blood Drive).',
+  },
+  {
+    slug: 'scholarship',
+    name: 'Scholarship Committee',
+    description: 'Oversees academic grants, financial aid, and scholarship selections for students.',
+  },
+  {
+    slug: 'stem-quiz-bowl',
+    name: 'STEM / Black History Quiz Bowl Committee',
+    description: 'Manages educational enrichment, science, technology, engineering, and math initiatives.',
   },
   {
     slug: 'talent-hunt',
     name: 'Talent Hunt Committee',
-    description: 'Organizes the annual Talent Hunt scholarship competition for high school students.',
+    description: "Organizes the fraternity's nationally recognized performing arts and talent competition.",
   },
   {
     slug: 'membership',
-    name: 'Membership Committee',
-    description: 'Oversees intake, member records, and chapter onboarding.',
+    name: 'Membership Selection (MSP) Committee',
+    description: 'Oversees the intake process and new member education.',
   },
   {
-    slug: 'scholarship',
-    name: 'Scholarship & Education',
-    description: 'Manages scholarship applications, academic programs, and mentorship.',
+    slug: 'reclamation',
+    name: 'Reclamation, Rededication, and Retention Committee',
+    description: 'Focuses on re-engaging inactive or displaced brothers back into active chapter life.',
   },
   {
-    slug: 'fundraising',
-    name: 'Fundraising Committee',
-    description: 'Plans chapter fundraisers and manages sponsorship relationships.',
+    slug: 'political-action',
+    name: 'Political Action Committee',
+    description: 'Coordinates voter registration drives, get-out-the-vote efforts, and civil rights partnerships.',
+  },
+  {
+    slug: 'technology',
+    name: 'Technology & Webmaster Committee',
+    description: 'Maintains digital platforms, chapter communications, and database systems.',
   },
 ]
 
