@@ -48,6 +48,12 @@ const pages = {
     description: 'Location, hours, meetings and contact information for the Eta Omicron Chapter House.',
     crumbs: ['Chapter House'],
   },
+  '/status': {
+    title: 'Website Status' + SUFFIX,
+    description: 'Website diagnostics.',
+    noindex: true,
+    crumbs: [],
+  },
   '/brothers/login': {
     title: 'Brothers Only Sign In' + SUFFIX,
     description: 'Member sign-in for the Eta Omicron Chapter.',

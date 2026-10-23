@@ -29,6 +29,7 @@ export const BrothersLogin = lazyPage('src/pages/brothers/Login.jsx', () => impo
 export const BrothersDashboard = lazyPage('src/pages/brothers/Dashboard.jsx', () => import('./pages/brothers/Dashboard'))
 export const News = lazyPage('src/pages/News.jsx', () => import('./pages/News'))
 export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import('./pages/ChapterHouse'))
+export const Status = lazyPage('src/pages/Status.jsx', () => import('./pages/Status'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
 
 /** Which lazy page component serves a pathname (null for Home). */
@@ -40,6 +41,7 @@ export function pageForPath(pathname) {
   if (p === '/media') return Media
   if (p === '/news') return News
   if (p === '/chapter-house') return ChapterHouse
+  if (p === '/status') return Status
   if (p === '/committees') return Committees
   if (p.startsWith('/committees/')) return CommitteeDetail
   if (p === '/brothers/login') return BrothersLogin
