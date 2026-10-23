@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import PageBanner from '../../components/PageBanner'
 import { useAuth } from '../../context/AuthContext'
+import AuthError from '../../components/AuthError'
 
 export default function Login() {
-  const { session, signIn } = useAuth()
+  const { session, signIn, error: authError } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -17,6 +18,8 @@ export default function Login() {
   if (session) {
     return <Navigate to="/brothers" replace />
   }
+
+  if (authError) return <AuthError error={authError} />
 
   async function handleSubmit(e) {
     e.preventDefault()

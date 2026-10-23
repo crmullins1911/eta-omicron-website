@@ -9,11 +9,11 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    '[supabaseClient] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. ' +
-      'Copy .env.example to .env and fill in your Supabase project credentials ' +
-      '(the same ones used by app.etaomicron.org).'
+  // Fail with a clear message (shown on the Brothers Only page) instead of a cryptic one.
+  throw new Error(
+    'MISSING_SUPABASE_CONFIG: VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY is not set for this deployment. ' +
+      'Add them in Vercel (Settings > Environment Variables, same values as app.etaomicron.org) and redeploy.'
   )
 }
 
-export const supabase = createClient(supabaseUrl ?? '', supabaseAnonKey ?? '')
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
