@@ -3,66 +3,78 @@ import { useState } from 'react'
 import { intent } from '../lib/prefetch'
 
 const links = [
-  { to: '/', label: 'Home', end: true },
-  { to: '/about', label: 'About Us' },
+  { to: '/about', label: 'About' },
   { to: '/events', label: 'Events' },
   { to: '/committees', label: 'Committees' },
   { to: '/media', label: 'Media' },
-  { to: '/brothers', label: 'Brothers Only' },
 ]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   const linkClass = ({ isActive }) =>
-    `block px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
-      isActive
-        ? 'bg-omega-gold text-omega-purple-dark'
-        : 'text-white/90 hover:bg-white/10 hover:text-white'
+    `block px-3 py-2.5 text-[15px] transition-colors ${
+      isActive ? 'text-gold-light' : 'text-ink/90 hover:text-gold-light'
+    }`
+
+  const brothersClass = ({ isActive }) =>
+    `block px-4 py-2 rounded-full border text-[15px] transition-colors ${
+      isActive ? 'bg-gold text-night border-gold' : 'border-gold text-gold hover:bg-gold hover:text-night'
     }`
 
   return (
-    <header className="bg-omega-purple sticky top-0 z-40 shadow-lg">
-      <nav className="container-page flex items-center justify-between h-16" aria-label="Main">
-        <NavLink to="/" className="flex items-center gap-2 text-white font-display text-lg font-bold">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-omega-gold text-omega-purple-dark font-black">
+    <header className="sticky top-0 z-40 bg-night/95 backdrop-blur border-b border-gold/35">
+      <nav className="container-page flex items-center justify-between gap-3 py-3.5" aria-label="Main">
+        <NavLink to="/" className="flex items-center gap-3.5 text-ink" {...intent('/')}>
+          {/* Replace with the chapter crest image when available. */}
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold font-display text-sm text-gold">
             ΕΟ
           </span>
-          Eta Omicron Chapter
+          <span className="font-display text-[22px] font-semibold">Eta Omicron</span>
         </NavLink>
 
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-ink p-2.5"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
           aria-expanded={open}
           aria-controls="mobile-menu"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
           </svg>
         </button>
 
         <ul className="hidden md:flex items-center gap-1">
           {links.map((l) => (
             <li key={l.to}>
-              <NavLink to={l.to} end={l.end} className={linkClass} {...intent(l.to)}>
+              <NavLink to={l.to} className={linkClass} {...intent(l.to)}>
                 {l.label}
               </NavLink>
             </li>
           ))}
+          <li className="ml-2">
+            <NavLink to="/brothers" className={brothersClass} {...intent('/brothers')}>
+              Brothers Only
+            </NavLink>
+          </li>
         </ul>
       </nav>
 
       {open && (
-        <ul id="mobile-menu" className="md:hidden bg-omega-purple-dark border-t border-white/10">
+        <ul id="mobile-menu" className="md:hidden border-t border-gold/20 bg-night-deep px-3 py-2">
           {links.map((l) => (
             <li key={l.to}>
-              <NavLink to={l.to} end={l.end} className={linkClass} onClick={() => setOpen(false)} {...intent(l.to)}>
+              <NavLink to={l.to} className={linkClass} onClick={() => setOpen(false)} {...intent(l.to)}>
                 {l.label}
               </NavLink>
             </li>
           ))}
+          <li className="py-2 px-3">
+            <NavLink to="/brothers" className={brothersClass} onClick={() => setOpen(false)} {...intent('/brothers')}>
+              Brothers Only
+            </NavLink>
+          </li>
         </ul>
       )}
     </header>

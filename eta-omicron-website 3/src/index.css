@@ -1,25 +1,75 @@
 @import "tailwindcss";
 
+/* "Editorial Night" theme: deep purple ground, old-gold accents, Fraunces headings, Work Sans text. */
 @theme {
+  --color-night: #1a0b2e; /* page background */
+  --color-night-deep: #120720; /* footer */
+  --color-plum: #2e1a4a; /* cards, photo frames */
+  --color-plum-light: #3a2359;
+  --color-ink: #f4f0fa; /* text */
+  --color-gold: #cfae5a; /* accent */
+  --color-gold-light: #e3c77a; /* links, hover */
+
+  /* Kept so older components still compile; new code uses the tokens above. */
   --color-omega-purple: #3b0764;
   --color-omega-purple-dark: #250a3d;
-  --color-omega-gold: #c9a227;
-  --color-omega-gold-light: #e6c65c;
-  --font-display: "Georgia", "Times New Roman", serif;
+  --color-omega-gold: #cfae5a;
+  --color-omega-gold-light: #e3c77a;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background-color: #faf9f6;
-  color: #1a1a1a;
+  font-family: var(--font-sans);
+  background-color: var(--color-night);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-night);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+/* Small uppercase gold label above headings. */
+.eyebrow {
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* Stand-in box for a photo that hasn't been supplied yet. */
+.photo-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: var(--color-plum);
+  color: rgb(244 240 250 / 0.65);
+  font-size: 0.875rem;
 }
 
 .container-page {
-  max-width: 1120px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 /* ---- Phased rendering helpers ------------------------------------------------------------- */
@@ -33,7 +83,7 @@ body {
 /* Loading placeholder shown while a page's code chunk downloads (rare, thanks to prefetching). */
 .skeleton {
   border-radius: 0.5rem;
-  background: linear-gradient(90deg, #ece9f1 25%, #f5f3f8 50%, #ece9f1 75%);
+  background: linear-gradient(90deg, #2e1a4a 25%, #3a2359 50%, #2e1a4a 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
 }

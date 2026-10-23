@@ -1,46 +1,37 @@
 import { Link } from 'react-router-dom'
 
 /**
- * PageBanner
+ * PageBanner: the title block at the top of inner pages (eyebrow breadcrumb, serif title,
+ * short description), in the Editorial Night style.
  *
- * The purple diagonal title banner (title + breadcrumb) that sits BELOW
- * your existing <Navbar />, on inner pages -- e.g. "Essay Contest",
- * "Programs". It does not duplicate navigation; Navbar already handles that.
- *
- * Usage (inside a page component, above your page content):
  *   <PageBanner
- *     title="Programs"
- *     subtitle="Optional one-line description under the title."
- *     breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Programs' }]}
+ *     title="Events"
+ *     subtitle="Optional one-line description."
+ *     breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]}
  *   />
  */
 export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-omega-purple to-omega-purple-dark text-white">
-      {/* diagonal accent shapes, matching the reference banner */}
-      <div className="pointer-events-none absolute inset-y-0 right-[8%] w-[45%] -skew-x-12 bg-white/5" />
-      <div className="pointer-events-none absolute inset-y-0 -right-[6%] w-[45%] -skew-x-12 bg-black/10" />
-
-      <div className="container-page relative py-14 md:py-16 text-center">
-        <h1 className="font-display text-4xl md:text-5xl font-bold">{title}</h1>
-        {subtitle && <p className="mx-auto mt-3 max-w-2xl text-white/80">{subtitle}</p>}
-
+    <section className="border-b border-gold/35">
+      <div className="container-page pt-16 pb-12 md:pt-20 md:pb-14">
         {breadcrumb.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mt-3 text-sm text-white/80">
+          <nav aria-label="Breadcrumb" className="eyebrow">
             {breadcrumb.map((crumb, i) => (
               <span key={i}>
                 {crumb.to ? (
-                  <Link to={crumb.to} className="hover:text-omega-gold">
+                  <Link to={crumb.to} className="hover:text-gold-light">
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span>{crumb.label}</span>
+                  <span aria-current="page">{crumb.label}</span>
                 )}
                 {i < breadcrumb.length - 1 && <span className="mx-2 opacity-60">/</span>}
               </span>
             ))}
           </nav>
         )}
+        <h1 className="mt-4 font-display text-5xl md:text-6xl font-semibold tracking-tight text-ink">{title}</h1>
+        {subtitle && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink/75">{subtitle}</p>}
       </div>
     </section>
   )

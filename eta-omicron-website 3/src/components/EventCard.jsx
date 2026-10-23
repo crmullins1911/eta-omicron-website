@@ -19,27 +19,28 @@ export default function EventCard({ event: e, past = false, highlight = false, d
   return (
     <article
       id={eventSlug(e)}
-      className={`reveal scroll-mt-24 p-5 rounded-lg border bg-white shadow-sm flex flex-col sm:flex-row gap-4 ${
-        highlight ? 'border-omega-gold ring-1 ring-omega-gold/40' : 'border-gray-200'
-      } ${past ? 'opacity-80' : ''}`}
+      className={`reveal scroll-mt-24 p-5 sm:p-6 rounded-lg border flex flex-col sm:flex-row gap-4 sm:gap-6 ${
+        highlight ? 'border-gold/70 bg-plum/70' : 'border-ink/12 bg-plum/40'
+      } ${past ? 'opacity-75' : ''}`}
     >
-      <div className="shrink-0 w-24 text-center">
-        <div className={`rounded-md py-2 ${past ? 'bg-gray-500' : 'bg-omega-purple'} text-white`}>
-          <p className="text-xs uppercase">{valid ? d.toLocaleString('en-US', { month: 'short' }) : ''}</p>
-          <p className="text-xl font-bold">{valid ? d.getDate() : ''}</p>
-          <p className="text-[10px] uppercase opacity-75">{valid ? d.toLocaleString('en-US', { weekday: 'short' }) : ''}</p>
-        </div>
+      <div className="shrink-0 sm:w-24">
+        <p className={`font-display text-[26px] leading-none ${past ? 'text-ink/60' : 'text-gold'}`}>
+          {valid ? d.toLocaleString('en-US', { month: 'short', day: 'numeric' }) : ''}
+        </p>
+        <p className="mt-1.5 text-xs uppercase tracking-[0.15em] text-ink/60">
+          {valid ? d.toLocaleString('en-US', { weekday: 'long' }) : ''}
+        </p>
       </div>
 
       <div className="flex-1 min-w-0">
         {highlight && (
-          <p className="text-xs font-semibold uppercase tracking-wide text-omega-gold mb-1">
+          <p className="eyebrow mb-1.5">
             Next up{daysAway != null && daysAway >= 0 && ` · ${daysAway === 0 ? 'today' : daysAway === 1 ? 'tomorrow' : `in ${daysAway} days`}`}
           </p>
         )}
-        <h3 className="font-semibold text-lg text-omega-purple">{e.title}</h3>
-        <p className="text-sm text-gray-500">{[formatTime(e.time), e.location].filter(Boolean).join(' · ')}</p>
-        {e.description && <p className="text-gray-600 mt-1">{e.description}</p>}
+        <h3 className="font-display text-2xl font-semibold text-ink">{e.title}</h3>
+        <p className="text-sm text-ink/70">{[formatTime(e.time), e.location].filter(Boolean).join(' · ')}</p>
+        {e.description && <p className="text-ink/75 mt-1">{e.description}</p>}
 
         {!past && (
           <div className="mt-3 flex flex-wrap gap-2">
@@ -47,7 +48,7 @@ export default function EventCard({ event: e, past = false, highlight = false, d
               type="button"
               onClick={() => downloadIcs(e)}
               data-track="event: add to calendar"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold bg-omega-purple text-white hover:bg-omega-purple-dark"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-gold text-night hover:bg-gold-light"
             >
               <CalendarIcon /> Add to calendar
             </button>
@@ -55,7 +56,7 @@ export default function EventCard({ event: e, past = false, highlight = false, d
               type="button"
               onClick={onShare}
               data-track="event: share"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-semibold border border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border border-ink/30 text-ink hover:border-gold-light hover:text-gold-light"
             >
               <ShareIcon /> {shareState || 'Share'}
             </button>

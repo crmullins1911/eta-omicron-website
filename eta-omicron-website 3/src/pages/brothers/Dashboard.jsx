@@ -21,28 +21,28 @@ export default function Dashboard() {
 
       <section className="container-page py-14">
         <div className="flex items-center justify-between mb-8">
-          <p className="text-gray-600">
+          <p className="text-ink/75">
             Signed in as <span className="font-semibold">{user?.email}</span>
           </p>
           <button
             onClick={signOut}
-            className="px-4 py-2 rounded-md border border-gray-300 text-sm font-semibold hover:bg-gray-50"
+            className="px-4 py-2 rounded-md border border-ink/30 text-sm font-semibold hover:border-gold-light hover:text-gold-light"
           >
             Sign Out
           </button>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <div className="p-6 rounded-lg border border-gray-200 bg-white shadow-sm">
-            <h3 className="font-display text-xl font-bold text-omega-purple mb-2">Financial Standing</h3>
-            <p className="text-gray-500 text-sm">
+          <div className="p-6 rounded-lg border border-ink/10 bg-plum/60">
+            <h3 className="font-display text-2xl font-semibold text-ink mb-2">Financial Standing</h3>
+            <p className="text-ink/70 text-sm">
               Placeholder &mdash; connect this to the financial data already tracked in
               app.etaomicron.org (dues status, chapter balance, etc.) via a shared Supabase table.
             </p>
           </div>
-          <div className="p-6 rounded-lg border border-gray-200 bg-white shadow-sm">
-            <h3 className="font-display text-xl font-bold text-omega-purple mb-2">Meeting Minutes</h3>
-            <p className="text-gray-500 text-sm">
+          <div className="p-6 rounded-lg border border-ink/10 bg-plum/60">
+            <h3 className="font-display text-2xl font-semibold text-ink mb-2">Meeting Minutes</h3>
+            <p className="text-ink/70 text-sm">
               Placeholder &mdash; list recent meeting minutes and chapter documents here for members only.
             </p>
           </div>
@@ -56,9 +56,9 @@ export default function Dashboard() {
           </LazyMount>
         </div>
 
-        <p className="mt-8 text-sm text-gray-400">
+        <p className="mt-8 text-sm text-ink/60">
           For full chapter management (member records, payments, etc.), go to{' '}
-          <a href="https://app.etaomicron.org" className="text-omega-purple underline">
+          <a href="https://app.etaomicron.org" className="text-ink underline">
             app.etaomicron.org
           </a>
           .

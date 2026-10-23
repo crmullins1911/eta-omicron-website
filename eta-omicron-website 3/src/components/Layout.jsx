@@ -33,7 +33,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-3 focus:py-2 focus:rounded">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-plum/60 focus:px-3 focus:py-2 focus:rounded">
         Skip to content
       </a>
       <Navbar />
@@ -52,7 +52,7 @@ export default function Layout() {
 function PageSkeleton() {
   return (
     <div aria-busy="true" aria-label="Loading page">
-      <div className="bg-gradient-to-br from-omega-purple to-omega-purple-dark h-44 md:h-48" />
+      <div className="border-b border-gold/35 h-44 md:h-52" />
       <div className="container-page py-14 space-y-4">
         <div className="skeleton h-6 w-1/3" />
         <div className="skeleton h-24 w-full" />
