@@ -8,6 +8,11 @@ import { clearCache, getSeed } from '../lib/cache'
 // explains any failure in plain English. Not linked anywhere, not in the sitemap, not indexed.
 // Shows no secrets: only the Supabase project address and whether a key is present.
 
+/* global __BUILD_INFO__ */
+const BUILD = typeof __BUILD_INFO__ !== 'undefined' ? __BUILD_INFO__ : {}
+// Vercel's default address for a project is "<project-name>.vercel.app" (sometimes with the team name added).
+const vercelProject = (BUILD.project || '').replace(/\.vercel\.app$/, '') || 'unknown'
+
 const CHECKS = [
   {
     id: 'events',
@@ -94,6 +99,12 @@ export default function Status() {
 
       <section className="container-page py-12 space-y-8 max-w-4xl">
         <div className="rounded-lg border border-ink/15 bg-plum/40 p-6 space-y-2">
+          <p className="eyebrow">Built by</p>
+          <Row label="Vercel project" value={vercelProject} />
+          <Row label="Deployment" value={`${BUILD.env || '?'} · ${BUILD.branch || '?'} @ ${BUILD.commit || '?'}`} />
+          <p className="text-sm text-ink/70 pb-3">
+            Settings changed in Vercel only reach the live site if they're changed in <b>this</b> project, followed by a redeploy.
+          </p>
           <p className="eyebrow">Connection settings (from Vercel)</p>
           <Row label="Supabase project" value={projectRef || 'NOT SET'} bad={!projectRef} />
           <Row label="Public key" value={keyInfo.kind} bad={!keyInfo.ok} />
@@ -279,6 +290,7 @@ function buildReport({ projectRef, seed, results, keyInfo }) {
   const lines = [
     `Eta Omicron website status — ${new Date().toISOString()}`,
     `Page: ${typeof location !== 'undefined' ? location.host : ''}`,
+    `Vercel project: ${vercelProject} (${BUILD.env || '?'}, ${BUILD.branch || '?'} @ ${BUILD.commit || '?'})`,
     `Supabase project: ${projectRef || 'NOT SET'}`,
     `Key: ${keyInfo.kind}${keyInfo.note && !keyInfo.ok ? ` — ${keyInfo.note}` : ''}`,
     `Settings repaired: ${settingFixes.length ? settingFixes.join('; ') : 'none'}`,
