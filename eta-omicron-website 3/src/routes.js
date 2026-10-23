@@ -27,6 +27,8 @@ export const Committees = lazyPage('src/pages/committees/Committees.jsx', () => 
 export const CommitteeDetail = lazyPage('src/pages/committees/CommitteeDetail.jsx', () => import('./pages/committees/CommitteeDetail'))
 export const BrothersLogin = lazyPage('src/pages/brothers/Login.jsx', () => import('./pages/brothers/Login'))
 export const BrothersDashboard = lazyPage('src/pages/brothers/Dashboard.jsx', () => import('./pages/brothers/Dashboard'))
+export const News = lazyPage('src/pages/News.jsx', () => import('./pages/News'))
+export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import('./pages/ChapterHouse'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
 
 /** Which lazy page component serves a pathname (null for Home). */
@@ -36,6 +38,8 @@ export function pageForPath(pathname) {
   if (p === '/about') return About
   if (p === '/events') return Events
   if (p === '/media') return Media
+  if (p === '/news') return News
+  if (p === '/chapter-house') return ChapterHouse
   if (p === '/committees') return Committees
   if (p.startsWith('/committees/')) return CommitteeDetail
   if (p === '/brothers/login') return BrothersLogin
@@ -57,6 +61,8 @@ export const publicPaths = [
   '/committees',
   ...committees.map((c) => `/committees/${c.slug}`),
   '/media',
+  '/news',
+  '/chapter-house',
 ]
 
 /** Pages prerendered for speed but kept out of search results. */

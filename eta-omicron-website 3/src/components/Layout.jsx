@@ -24,12 +24,13 @@ export default function Layout() {
     if (firstRender.current) {
       firstRender.current = false
       prefetchLikelyPagesWhenIdle(pathname)
-    } else {
-      if (!hash) window.scrollTo(0, 0)
+    } else if (!hash) {
+      window.scrollTo(0, 0)
     }
+    if (hash) scrollToHash(hash)
     trackPageView(pathname)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  }, [pathname, hash])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -47,6 +48,17 @@ export default function Layout() {
       <LazyHydrate id="footer" className="cv-auto" component={Footer} />
     </div>
   )
+}
+
+// Links like /about#leadership: scroll to that section once the page has rendered.
+function scrollToHash(hash) {
+  let tries = 0
+  const attempt = () => {
+    const el = document.getElementById(decodeURIComponent(hash.slice(1)))
+    if (el) el.scrollIntoView({ block: 'start' })
+    else if (tries++ < 20) setTimeout(attempt, 50)
+  }
+  requestAnimationFrame(attempt)
 }
 
 function PageSkeleton() {

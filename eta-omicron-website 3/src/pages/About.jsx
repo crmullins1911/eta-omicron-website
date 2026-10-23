@@ -10,13 +10,13 @@ export default function About() {
         subtitle="Our history, our leadership, and the principles that guide us."
       />
 
-      <section className="container-page py-14">
+      <section id="history" className="container-page py-14 scroll-mt-24">
         <h2 className="font-display text-3xl font-semibold text-ink mb-4">Chapter History</h2>
         <p className="text-ink/85 leading-relaxed max-w-3xl">{history}</p>
       </section>
 
-      <section className="container-page pb-16">
-        <h2 className="font-display text-3xl font-semibold text-ink mb-6">Officers &amp; Leadership</h2>
+      <section id="leadership" className="container-page pb-16 scroll-mt-24">
+        <h2 className="font-display text-3xl font-semibold text-ink mb-6">Executive Committee</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {officers.map((o) => (
             <div key={o.role} className="rounded-lg border border-ink/10 bg-plum/60 p-5">

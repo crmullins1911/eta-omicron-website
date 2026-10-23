@@ -38,6 +38,16 @@ const pages = {
     description: 'Photos and videos from Eta Omicron Chapter events and community service.',
     crumbs: ['Media'],
   },
+  '/news': {
+    title: 'News' + SUFFIX,
+    description: 'Announcements, stories and updates from the Eta Omicron Chapter of Omega Psi Phi Fraternity, Inc.',
+    crumbs: ['News'],
+  },
+  '/chapter-house': {
+    title: 'Chapter House' + SUFFIX,
+    description: 'Location, hours, meetings and contact information for the Eta Omicron Chapter House.',
+    crumbs: ['Chapter House'],
+  },
   '/brothers/login': {
     title: 'Brothers Only Sign In' + SUFFIX,
     description: 'Member sign-in for the Eta Omicron Chapter.',

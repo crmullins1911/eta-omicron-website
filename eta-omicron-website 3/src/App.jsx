@@ -8,6 +8,8 @@ import {
   Media,
   Committees,
   CommitteeDetail,
+  News,
+  ChapterHouse,
   BrothersLogin,
   BrothersDashboard,
   NotFound,
@@ -26,6 +28,8 @@ export default function App() {
         <Route path="/committees" element={<Committees />} />
         <Route path="/committees/:slug" element={<CommitteeDetail />} />
         <Route path="/media" element={<Media />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/chapter-house" element={<ChapterHouse />} />
 
         <Route path="/brothers/login" element={<BrothersLogin />} />
         <Route element={<ProtectedRoute />}>
