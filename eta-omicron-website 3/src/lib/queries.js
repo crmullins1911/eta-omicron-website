@@ -1,7 +1,7 @@
 // Every public data set the site reads, in one place. Pages read these through useCachedQuery,
 // and the build step (scripts/prerender.mjs) runs the same fetchers to bake data into the HTML.
 
-import { restSelect } from './rest'
+import { restSelect, restSignUrls } from './rest'
 import {
   events as placeholderEvents,
   mediaItems as placeholderMedia,
@@ -58,7 +58,35 @@ export function committeeDocsQuery(slug) {
   }
 }
 
+// News from the member app: feed posts an officer shared to the website (posts.on_website).
+// Photos live in the app's private "feed-photos" bucket, so each gets a signed link.
+// If the sharing database update hasn't been run yet, this quietly returns no posts.
+export const appPostsQuery = {
+  key: 'news:app-posts',
+  ttl: 2 * MINUTE,
+  fallback: [],
+  fetch: async () => {
+    const rows = await restSelect('posts', {
+      select: 'id,caption,image_url,created_at',
+      on_website: 'eq.true',
+      order: 'created_at.desc',
+      limit: '24',
+    })
+    const urls = await restSignUrls(
+      'feed-photos',
+      rows.map((r) => r.image_url).filter(Boolean)
+    ).catch(() => ({}))
+    return rows.map((r) => ({
+      slug: `post-${r.id}`,
+      date: String(r.created_at || '').slice(0, 10),
+      createdAt: r.created_at,
+      caption: r.caption || '',
+      image: r.image_url ? urls[r.image_url] || null : null,
+    }))
+  },
+}
+
 /** Queries to bake into the HTML at build time. */
 export function prerenderQueries() {
-  return [eventsQuery, mediaQuery, ...committees.map((c) => committeeDocsQuery(c.slug))]
+  return [eventsQuery, mediaQuery, appPostsQuery, ...committees.map((c) => committeeDocsQuery(c.slug))]
 }
