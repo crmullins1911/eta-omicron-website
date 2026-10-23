@@ -40,7 +40,7 @@ export default function Status() {
   const [running, setRunning] = useState(false)
   const [cleared, setCleared] = useState(false)
   const projectRef = SUPABASE_URL ? safeHost(SUPABASE_URL) : null
-  const [seed, setSeed] = useState(() => (typeof window !== 'undefined' ? getSeed() : null))
+  const [seed, setSeed] = useState(null) // filled in after load, so the prebuilt page matches
 
   const run = async () => {
     setRunning(true)
@@ -56,8 +56,10 @@ export default function Status() {
 
   useEffect(() => {
     run()
-    // This page isn't prebuilt, so read the data the home page was built with.
-    if (!seed) {
+    // The data this deploy was built with (from this page, or else from the home page).
+    const own = getSeed()
+    if (own) setSeed(own)
+    else {
       fetch('/', { cache: 'no-store' })
         .then((r) => r.text())
         .then((html) => {

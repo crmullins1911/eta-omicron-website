@@ -68,7 +68,7 @@ export const publicPaths = [
 ]
 
 /** Pages prerendered for speed but kept out of search results. */
-export const privatePrerenderPaths = ['/brothers/login']
+export const privatePrerenderPaths = ['/brothers/login', '/brothers', '/status']
 
 /** Pages visitors most often go to next; prefetched while the browser is idle. */
 export const likelyNext = ['/events', '/about', '/committees', '/media']
