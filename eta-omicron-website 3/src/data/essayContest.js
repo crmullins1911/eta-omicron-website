@@ -20,7 +20,7 @@ export const essayContest = {
 
   // Where students send their completed application (email only; mailed paper copies are not
   // accepted). Change this if the Achievement Week committee uses a different address.
-  submitEmail: 'info@etaomicron.org',
+  submitEmail: 'EtaOmicronQues@gmail.com',
   contactName: '', // e.g. 'Bro. John Smith, Achievement Week Chairman'
   contactPhone: '',
 
