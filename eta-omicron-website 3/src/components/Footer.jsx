@@ -24,7 +24,7 @@ export default function Footer() {
           <p className="font-display text-2xl font-semibold text-ink">Eta Omicron Chapter</p>
           <p className="mt-2 text-ink/70">Omega Psi Phi Fraternity, Inc.</p>
           <p className="mt-1 text-ink/70">
-            <a href="mailto:info@etaomicron.org" className="hover:text-gold-light">info@etaomicron.org</a>
+            <a href="mailto:EtaOmicronQues@gmail.com" className="hover:text-gold-light">EtaOmicronQues@gmail.com</a>
           </p>
           <p className="mt-5 text-sm text-ink/60">Manhood · Scholarship · Perseverance · Uplift</p>
         </div>

@@ -130,7 +130,7 @@ function organization() {
     alternateName: 'Eta Omicron Chapter',
     url: SITE_URL + '/',
     logo: SITE_URL + '/brand/crest-192.png',
-    email: 'info@etaomicron.org',
+    email: 'EtaOmicronQues@gmail.com',
     parentOrganization: { '@type': 'Organization', name: 'Omega Psi Phi Fraternity, Inc.' },
   }
 }
