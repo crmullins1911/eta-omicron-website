@@ -31,7 +31,7 @@ export default function ChapterVisual() {
   const caption = media?.caption || 'Brothers in service.'
 
   return (
-    <figure className="relative overflow-hidden rounded-lg border border-gold/35 bg-plum aspect-[16/9] md:aspect-[21/9]">
+    <figure className="depth-frame reveal relative overflow-hidden rounded-lg border border-gold/35 bg-plum aspect-[16/9] md:aspect-[21/9]">
       {media?.type === 'video' && media.src ? (
         <video
           ref={videoRef}
@@ -42,7 +42,7 @@ export default function ChapterVisual() {
           playsInline
           preload="none"
           aria-label={media.alt || caption}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="depth-photo absolute inset-0 h-full w-full object-cover"
         />
       ) : media?.src ? (
         <img
@@ -50,7 +50,7 @@ export default function ChapterVisual() {
           alt={media.alt || ''}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="depth-photo absolute inset-0 h-full w-full object-cover"
         />
       ) : (
         <img
@@ -59,7 +59,7 @@ export default function ChapterVisual() {
           aria-hidden="true"
           loading="lazy"
           decoding="async"
-          className="absolute right-[-4%] top-1/2 -translate-y-1/2 h-[130%] w-auto opacity-[0.12]"
+          className="depth-photo absolute right-[-4%] top-1/2 -translate-y-1/2 h-[130%] w-auto opacity-[0.12]"
         />
       )}
 

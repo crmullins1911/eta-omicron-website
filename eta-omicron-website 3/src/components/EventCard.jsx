@@ -19,7 +19,7 @@ export default function EventCard({ event: e, past = false, highlight = false, d
   return (
     <article
       id={eventSlug(e)}
-      className={`reveal scroll-mt-24 p-5 sm:p-6 rounded-lg border flex flex-col sm:flex-row gap-4 sm:gap-6 ${
+      className={`reveal tilt scroll-mt-24 p-5 sm:p-6 rounded-lg border flex flex-col sm:flex-row gap-4 sm:gap-6 ${
         highlight ? 'border-gold/70 bg-plum/70' : 'border-ink/12 bg-plum/40'
       } ${past ? 'opacity-75' : ''}`}
     >

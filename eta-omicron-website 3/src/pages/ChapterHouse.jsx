@@ -39,7 +39,7 @@ export default function ChapterHouse() {
           )}
         </div>
 
-        <aside className="flex-[1_1_300px] rounded-lg border border-gold/40 bg-plum/50 p-7 self-start space-y-6">
+        <aside className="reveal flex-[1_1_300px] rounded-lg border border-gold/40 bg-plum/50 p-7 self-start space-y-6">
           {h.address && (
             <div>
               <p className="eyebrow">Address</p>

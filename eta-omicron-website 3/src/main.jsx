@@ -8,6 +8,7 @@ import { startHydration } from './lib/hydration'
 import { preloadPath } from './routes'
 import { initRum, reportHydrationIssue } from './lib/rum'
 import { registerServiceWorker } from './lib/serviceWorker'
+import { initDepth } from './lib/depth'
 
 // Rendering happens in phases:
 //
@@ -52,6 +53,9 @@ if (prerendered) {
 } else {
   createRoot(container).render(app)
 }
+
+// 3D scroll and cursor-tilt effects (mostly CSS; see src/lib/depth.js).
+initDepth()
 
 const whenIdle = (fn) =>
   'requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 4000 }) : setTimeout(fn, 2000)
