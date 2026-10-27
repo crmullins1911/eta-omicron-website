@@ -24,13 +24,6 @@ export const essayContest = {
   contactName: '', // e.g. 'Bro. John Smith, Achievement Week Chairman'
   contactPhone: '',
 
-  // Printed in the "Local Chapter / Sponsor" boxes of applications sent through the website.
-  chapterName: 'Eta Omicron Chapter, Omega Psi Phi Fraternity, Inc.',
-  chapterLocation: { area: '', city: '', state: '' }, // e.g. { area: 'Calhoun County', city: '…', state: '…' }
-
-  // Set to false to turn off the online application (the PDF download stays).
-  onlineApplication: true,
-
   wordCount: '700–750 words',
 
   internationalAwards: [
