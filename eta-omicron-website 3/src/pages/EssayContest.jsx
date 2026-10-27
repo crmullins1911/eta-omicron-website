@@ -22,6 +22,7 @@ export default function EssayContest() {
   const open = contestOpen(now)
   const days = daysLeft(now)
   const total = c.scoring.reduce((sum, s) => sum + s.points, 0)
+  const online = open && c.onlineApplication
 
   return (
     <div>
@@ -57,17 +58,31 @@ export default function EssayContest() {
           <Fact label="Top International award" value={c.internationalAwards[0]?.amount}>
             Plus chapter and District awards.
           </Fact>
-          <Fact label="Submit by" value="Email only">
+          <Fact label="How to apply" value={c.onlineApplication ? 'Online or by email' : 'By email'}>
             Mailed paper copies are not accepted.
           </Fact>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-3.5">
+          {online && (
+            <Link
+              to="/essay-contest/apply"
+              {...intent('/essay-contest/apply')}
+              data-track="essay contest: apply online"
+              className="rounded-full bg-gold px-7 py-3.5 font-semibold text-night hover:bg-gold-light"
+            >
+              Apply online →
+            </Link>
+          )}
           <a
             href={c.pdf}
             download
             data-track="essay contest: download application"
-            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3.5 font-semibold text-night hover:bg-gold-light"
+            className={
+              online
+                ? 'inline-flex items-center gap-2 rounded-full border border-ink/45 px-6 py-3.5 font-semibold text-ink hover:border-gold-light hover:text-gold-light'
+                : 'inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3.5 font-semibold text-night hover:bg-gold-light'
+            }
           >
             <DownloadIcon /> Download the application (PDF, {c.pdfPages} pages)
           </a>
@@ -76,11 +91,17 @@ export default function EssayContest() {
             target="_blank"
             rel="noreferrer"
             data-track="essay contest: view application"
-            className="rounded-full border border-ink/45 px-6 py-3.5 font-semibold text-ink hover:border-gold-light hover:text-gold-light"
+            className="px-2 py-3.5 font-semibold text-gold-light hover:text-gold"
           >
             View it in your browser
           </a>
         </div>
+        {online && (
+          <p className="mt-4 max-w-3xl text-ink/70">
+            Apply online to fill in and sign the forms right here and send them, with your essay and photo, straight to
+            the chapter. Or download the forms, complete them, and email everything to {c.submitEmail}.
+          </p>
+        )}
 
         {!open && (
           <p className="mt-8 max-w-3xl rounded-lg border border-gold/40 bg-plum/50 p-5 text-ink/85">
@@ -95,13 +116,22 @@ export default function EssayContest() {
         <p className="eyebrow">How to enter</p>
         <h2 className="mt-2 mb-8 font-display text-4xl font-semibold">Five steps</h2>
         <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-          {[
-            ['Download the packet', 'It has the rules, the Title Page and both release forms.'],
-            ['Write your essay', `${c.wordCount}, answering this year's topic, in your own words.`],
-            ['Fill in and sign the forms', 'A parent or guardian signs too if you are under 18.'],
-            ['Add your photo', 'A clear, color head-and-shoulders photo from the last six months.'],
-            ['Email everything to us', `Send it all to ${c.submitEmail} before ${c.deadlineText.replace(/\.$/, '')}.`],
-          ].map(([title, text], i) => (
+          {(online
+            ? [
+                ['Write your essay', `${c.wordCount}, answering this year's topic, in your own words. Save it as a Word file.`],
+                ['Get your photo', 'A clear, color head-and-shoulders photo from the last six months.'],
+                ['Apply online', 'Fill in the Title Page and release forms on this website and attach your essay and photo.'],
+                ['Sign on screen', 'A parent or guardian signs too if you are under 18.'],
+                ['Submit', `It goes straight to the chapter, and you get a copy by email. Due ${c.deadlineText.replace(/\.$/, '')}.`],
+              ]
+            : [
+                ['Download the packet', 'It has the rules, the Title Page and both release forms.'],
+                ['Write your essay', `${c.wordCount}, answering this year's topic, in your own words.`],
+                ['Fill in and sign the forms', 'A parent or guardian signs too if you are under 18.'],
+                ['Add your photo', 'A clear, color head-and-shoulders photo from the last six months.'],
+                ['Email everything to us', `Send it all to ${c.submitEmail} before ${c.deadlineText.replace(/\.$/, '')}.`],
+              ]
+          ).map(([title, text], i) => (
             <li key={title} className="reveal tilt rounded-lg border border-ink/15 bg-plum/40 p-6">
               <span className="font-display text-4xl text-gold">{i + 1}</span>
               <p className="mt-3 font-display text-xl font-semibold">{title}</p>
