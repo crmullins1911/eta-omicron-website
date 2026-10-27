@@ -54,6 +54,12 @@ const pages = {
       'Omega Psi Phi International High School Essay Contest: this year\'s topic, deadline, scholarship awards, rules and the application to download. Open to college-bound high school seniors.',
     crumbs: [{ label: 'Committees', path: '/committees' }, { label: 'Achievement Week', path: '/committees/achievement-week' }, 'Essay Contest'],
   },
+  '/essay-contest/apply': {
+    title: 'Apply Online: High School Essay Contest' + SUFFIX,
+    description: 'Online application for the Omega Psi Phi International High School Essay Contest, sent to the Eta Omicron Chapter.',
+    noindex: true,
+    crumbs: [{ label: 'Essay Contest', path: '/essay-contest' }, 'Apply online'],
+  },
   '/status': {
     title: 'Website Status' + SUFFIX,
     description: 'Website diagnostics.',

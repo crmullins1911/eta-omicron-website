@@ -30,6 +30,7 @@ export const BrothersDashboard = lazyPage('src/pages/brothers/Dashboard.jsx', ()
 export const News = lazyPage('src/pages/News.jsx', () => import('./pages/News'))
 export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import('./pages/ChapterHouse'))
 export const EssayContest = lazyPage('src/pages/EssayContest.jsx', () => import('./pages/EssayContest'))
+export const EssayApply = lazyPage('src/pages/EssayApply.jsx', () => import('./pages/EssayApply'))
 export const Status = lazyPage('src/pages/Status.jsx', () => import('./pages/Status'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
 
@@ -43,6 +44,7 @@ export function pageForPath(pathname) {
   if (p === '/news') return News
   if (p === '/chapter-house') return ChapterHouse
   if (p === '/essay-contest') return EssayContest
+  if (p === '/essay-contest/apply') return EssayApply
   if (p === '/status') return Status
   if (p === '/committees') return Committees
   if (p.startsWith('/committees/')) return CommitteeDetail
@@ -71,7 +73,7 @@ export const publicPaths = [
 ]
 
 /** Pages prerendered for speed but kept out of search results. */
-export const privatePrerenderPaths = ['/brothers/login', '/brothers', '/status']
+export const privatePrerenderPaths = ['/essay-contest/apply', '/brothers/login', '/brothers', '/status']
 
 /** Pages visitors most often go to next; prefetched while the browser is idle. */
 export const likelyNext = ['/events', '/about', '/committees', '/media']
