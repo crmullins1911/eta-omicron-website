@@ -11,6 +11,7 @@ import {
   News,
   ChapterHouse,
   EssayContest,
+  EssayApply,
   Status,
   BrothersLogin,
   BrothersDashboard,
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/news" element={<News />} />
         <Route path="/chapter-house" element={<ChapterHouse />} />
         <Route path="/essay-contest" element={<EssayContest />} />
+        <Route path="/essay-contest/apply" element={<EssayApply />} />
         <Route path="/status" element={<Status />} />
 
         <Route path="/brothers/login" element={<BrothersLogin />} />
