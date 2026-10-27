@@ -19,8 +19,6 @@ import { fillApplication } from './_lib/fillApplication.js'
 
 const SITE = 'www.etaomicron.org'
 
-export const config = { maxDuration: 30 }
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') return send(res, 405, { error: 'Use POST.' })
 
@@ -122,14 +120,19 @@ function send(res, status, body) {
   res.status(status).setHeader('Cache-Control', 'no-store').json(body)
 }
 
-/** The blank application packet: the copy the website serves (or the local file when testing). */
 async function loadTemplate(req) {
-  const host = req.headers['x-forwarded-host'] || req.headers.host
-  if (host && !/^(localhost|127\.0\.0\.1)(:|$)/.test(host)) {
-    const r = await fetch(`https://${host}${contest.pdf}`)
-    if (r.ok && (r.headers.get('content-type') || '').includes('pdf')) return Buffer.from(await r.arrayBuffer())
+  const rel = contest.pdf.replace(/^\//, '')
+  for (const path of [new URL(`../public/${rel}`, import.meta.url), `${process.cwd()}/public/${rel}`, `${process.cwd()}/dist/${rel}`]) {
+    try {
+      return await readFile(path)
+    } catch {
+      /* try the next place */
+    }
   }
-  return readFile(`${process.cwd()}/public${contest.pdf}`)
+  // Last resort: the copy the site itself serves.
+  const r = await fetch(`https://${req.headers.host}${contest.pdf}`)
+  if (!r.ok) throw new Error(`Could not load the application PDF (${r.status})`)
+  return Buffer.from(await r.arrayBuffer())
 }
 
 function kind(buf) {
