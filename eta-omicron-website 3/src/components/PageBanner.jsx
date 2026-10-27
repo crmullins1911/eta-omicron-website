@@ -12,8 +12,19 @@ import { Link } from 'react-router-dom'
  */
 export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
   return (
-    <section className="border-b border-gold/35">
-      <div className="container-page pt-16 pb-12 md:pt-20 md:pb-14">
+    <section className="depth-banner relative overflow-hidden border-b border-gold/35">
+      {/* Back layer: a faint chapter emblem that drifts slower than the page as it scrolls. */}
+      <img
+        src="/brand/eta-omicron-360.webp"
+        alt=""
+        aria-hidden="true"
+        width="360"
+        height="333"
+        decoding="async"
+        fetchPriority="low"
+        className="depth-back pointer-events-none absolute right-[4%] top-1/2 hidden h-[150%] w-auto -translate-y-1/2 opacity-[0.07] md:block"
+      />
+      <div className="depth-front relative container-page pt-16 pb-12 md:pt-20 md:pb-14">
         {breadcrumb.length > 0 && (
           <nav aria-label="Breadcrumb" className="eyebrow">
             {breadcrumb.map((crumb, i) => (

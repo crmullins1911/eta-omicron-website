@@ -93,25 +93,177 @@ input:focus-visible {
   }
 }
 
-/* Cards ease in as they scroll into view. Pure CSS (scroll-driven animations), so it costs no
-   JavaScript, and content is always visible in browsers without support or with reduced motion. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
+/* ---- 3D depth --------------------------------------------------------------------------------
+
+   Three effects, all driven by the scroll position or the mouse:
+     1. Depth layers (parallax): the home hero, page banners and the photo band are built in
+        layers that move at different speeds as the page scrolls.        .depth-*
+     2. Tilt-in: cards and sections start tipped back in 3D and settle flat as they scroll into
+        view.                                                              .reveal
+     3. Cursor tilt: on computers, cards lean toward the mouse with a soft gold sheen
+        (src/lib/depth.js sets --rx / --ry / --gx / --gy / --glow).        .tilt
+
+   Everything is CSS scroll-driven animation (no JavaScript runs while scrolling). Browsers without
+   it get a simple fade-up instead (src/lib/depth.js), and visitors whose device is set to reduce
+   motion get a still page. Content is never hidden before the page's code loads. */
+
+@property --rx {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --ry {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --gx {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+@property --gy {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+@property --glow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* 3. Cursor tilt. The values are set by depth.js only on devices with a mouse. */
+.tilt {
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition-property: --rx, --ry, --glow, color, background-color, border-color, box-shadow;
+  transition-duration: 0.6s, 0.6s, 0.4s, 0.2s, 0.2s, 0.2s, 0.3s;
+  transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tilt[data-tilting] {
+  transition-duration: 0.12s, 0.12s, 0.4s, 0.2s, 0.2s, 0.2s, 0.3s;
+  box-shadow:
+    0 22px 45px -22px rgb(0 0 0 / 0.75),
+    0 0 0 1px rgb(207 174 90 / 0.25);
+}
+.tilt:not(.no-sheen)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx) var(--gy), rgb(227 199 122 / 0.16), transparent 60%);
+  opacity: var(--glow);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Gentle float for the chapter emblem in the home hero. */
+  .depth-float {
+    animation: depth-float 7s ease-in-out infinite;
+  }
+
+  @supports (animation-timeline: view()) {
+    /* 2. Tilt-in. --rx/--ry are kept in the keyframes so the cursor tilt still works. */
     .reveal {
-      animation: reveal-in linear both;
+      animation: reveal-3d linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 60%;
+      animation-range: entry 0% entry 240px;
+    }
+
+    /* 1. Depth layers, tied to how far the page has scrolled. */
+    .depth-back,
+    .depth-mid,
+    .depth-front {
+      animation: linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    .depth-back {
+      animation-name: depth-back;
+    }
+    .depth-mid {
+      animation-name: depth-mid;
+    }
+    .depth-front {
+      animation-name: depth-front;
+    }
+    /* Page banners are shorter, so their layers finish sooner. */
+    .depth-banner .depth-back,
+    .depth-banner .depth-front {
+      animation-range: 0 420px;
+    }
+
+    /* The photo band: the picture drifts inside its frame as the band crosses the screen. */
+    .depth-frame {
+      view-timeline: --frame block;
+    }
+    .depth-photo {
+      animation: depth-photo linear both;
+      animation-timeline: --frame;
+      animation-range: cover 0% cover 100%;
     }
   }
 }
-@keyframes reveal-in {
+
+/* Fallback for browsers without scroll-driven animations (set up by src/lib/depth.js). */
+.reveal-js .reveal {
+  transition:
+    opacity 0.7s ease,
+    translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal-js .reveal.tilt {
+  transition-property: opacity, translate, --rx, --ry, --glow, color, background-color, border-color, box-shadow;
+  transition-duration: 0.7s, 0.8s, 0.6s, 0.6s, 0.4s, 0.2s, 0.2s, 0.2s, 0.3s;
+}
+.reveal-js .reveal:not([data-in]) {
+  opacity: 0;
+  translate: 0 28px;
+}
+
+@keyframes reveal-3d {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: perspective(1000px) translateY(48px) rotateX(calc(var(--rx) + 18deg)) rotateY(var(--ry)) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: perspective(1000px) translateY(0) rotateX(var(--rx)) rotateY(var(--ry)) scale(1);
+  }
+}
+@keyframes depth-back {
+  to {
+    transform: translateY(240px) scale(1.15);
+    opacity: 0.35;
+  }
+}
+@keyframes depth-mid {
+  to {
+    transform: perspective(900px) translateY(150px) rotateX(22deg) scale(0.88);
+    opacity: 0.3;
+  }
+}
+@keyframes depth-front {
+  to {
+    transform: translateY(-60px);
+    opacity: 0.15;
+  }
+}
+@keyframes depth-photo {
+  from {
+    transform: translateY(-7%) scale(1.18);
+  }
+  to {
+    transform: translateY(7%) scale(1.18);
+  }
+}
+@keyframes depth-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-0.6deg);
   }
 }
 

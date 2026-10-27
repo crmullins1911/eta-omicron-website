@@ -34,7 +34,7 @@ export default function Media() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((m, i) => (
-            <figure key={m.url || m.title} className="reveal rounded-lg overflow-hidden border border-ink/10 bg-plum/60">
+            <figure key={m.url || m.title} className="reveal tilt rounded-lg overflow-hidden border border-ink/10 bg-plum/60">
               <div className="aspect-video bg-plum flex items-center justify-center text-ink/50 text-sm">
                 {m.url ? (
                   m.type === 'video' ? (

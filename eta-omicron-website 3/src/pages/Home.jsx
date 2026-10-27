@@ -33,8 +33,8 @@ export default function Home() {
       <Seo path="/" data={{ events: upcoming }} meta={false} />
 
       {/* Hero */}
-      <section className="container-page pt-16 pb-20 md:pt-24 md:pb-24 flex flex-wrap items-center gap-14">
-        <div className="flex-[1_1_520px] min-w-0">
+      <section className="relative container-page pt-16 pb-20 md:pt-24 md:pb-24 flex flex-wrap items-center gap-14">
+        <div className="depth-front relative z-10 flex-[1_1_520px] min-w-0">
           <p className="eyebrow">Eta Omicron Chapter · Omega Psi Phi Fraternity, Inc.</p>
           <h1 className="mt-6 font-display font-semibold text-ink leading-[1.02] tracking-tight text-[clamp(3rem,6.5vw,5.5rem)]">
             Manhood.
@@ -68,7 +68,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex-[1_1_380px] flex justify-center">
+        {/* Depth layers: a gold glow at the back, the emblem in the middle, the words in front. Each moves
+            at its own speed as the page scrolls (see "3D depth" in index.css). */}
+        <div className="depth-mid relative isolate flex-[1_1_380px] flex justify-center">
+          <div
+            aria-hidden="true"
+            className="depth-back pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(207_174_90/0.22),rgb(58_35_89/0.35)_55%,transparent)]"
+          />
+          <div className="tilt no-sheen w-full max-w-[480px]">
           {/* Chapter emblem: the largest element on screen, so it loads first. */}
           <img
             src="/brand/eta-omicron-720.webp"
@@ -79,8 +86,9 @@ export default function Home() {
             height="666"
             fetchPriority="high"
             decoding="async"
-            className="w-full max-w-[480px] h-auto"
+            className="depth-float w-full h-auto"
           />
+          </div>
         </div>
       </section>
 
@@ -110,7 +118,7 @@ function EventsAndNews() {
               return (
                 <li
                   key={e.title + e.date}
-                  className={`flex flex-wrap items-baseline gap-x-6 gap-y-2 py-5 border-t border-ink/15 ${i === upcoming.length - 1 ? 'border-b' : ''}`}
+                  className={`reveal flex flex-wrap items-baseline gap-x-6 gap-y-2 py-5 border-t border-ink/15 ${i === upcoming.length - 1 ? 'border-b' : ''}`}
                 >
                   <p className="w-28 font-display text-[22px] text-gold">
                     {d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -213,7 +221,7 @@ function QuickLinks() {
               to={l.to}
               {...intent(l.page)}
               data-track={`home quick link: ${l.title}`}
-              className="reveal group flex h-full flex-col rounded-lg border border-ink/15 bg-plum/40 p-6 transition-colors hover:border-gold hover:bg-plum/70"
+              className="reveal tilt group flex h-full flex-col rounded-lg border border-ink/15 bg-plum/40 p-6 transition-colors hover:border-gold hover:bg-plum/70"
             >
               <span className="eyebrow">{l.eyebrow}</span>
               <span className="mt-3 font-display text-2xl font-semibold text-ink">{l.title}</span>

@@ -18,7 +18,7 @@ export default function Committees() {
             key={c.slug}
             to={`/committees/${c.slug}`}
             {...intent(`/committees/${c.slug}`)}
-            className="reveal group flex flex-col p-6 rounded-lg border border-ink/15 bg-plum/40 hover:border-gold hover:bg-plum/70 transition-colors"
+            className="reveal tilt group flex flex-col p-6 rounded-lg border border-ink/15 bg-plum/40 hover:border-gold hover:bg-plum/70 transition-colors"
           >
             <h3 className="font-display text-2xl font-semibold text-ink">{c.name}</h3>
             <p className="text-ink/75 mt-2 flex-1 leading-relaxed">{c.description}</p>
