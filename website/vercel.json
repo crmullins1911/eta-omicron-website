@@ -44,5 +44,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/essay-submit.js": {
+      "includeFiles": "public/files/**"
+    }
+  }
 }

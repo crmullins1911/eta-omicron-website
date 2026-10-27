@@ -122,14 +122,17 @@ function send(res, status, body) {
   res.status(status).setHeader('Cache-Control', 'no-store').json(body)
 }
 
-/** The blank application packet: the copy the website serves (or the local file when testing). */
+/** The blank application packet: bundled with this function (vercel.json → includeFiles), or the
+ *  copy the website serves as a fallback. */
 async function loadTemplate(req) {
-  const host = req.headers['x-forwarded-host'] || req.headers.host
-  if (host && !/^(localhost|127\.0\.0\.1)(:|$)/.test(host)) {
+  try {
+    return await readFile(`${process.cwd()}/public${contest.pdf}`)
+  } catch {
+    const host = req.headers['x-forwarded-host'] || req.headers.host
     const r = await fetch(`https://${host}${contest.pdf}`)
-    if (r.ok && (r.headers.get('content-type') || '').includes('pdf')) return Buffer.from(await r.arrayBuffer())
+    if (!r.ok) throw new Error(`Could not load the application PDF (${r.status})`)
+    return Buffer.from(await r.arrayBuffer())
   }
-  return readFile(`${process.cwd()}/public${contest.pdf}`)
 }
 
 function kind(buf) {
