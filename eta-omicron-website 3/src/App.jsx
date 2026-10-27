@@ -10,6 +10,7 @@ import {
   CommitteeDetail,
   News,
   ChapterHouse,
+  EssayContest,
   Status,
   BrothersLogin,
   BrothersDashboard,
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/media" element={<Media />} />
         <Route path="/news" element={<News />} />
         <Route path="/chapter-house" element={<ChapterHouse />} />
+        <Route path="/essay-contest" element={<EssayContest />} />
         <Route path="/status" element={<Status />} />
 
         <Route path="/brothers/login" element={<BrothersLogin />} />

@@ -22,6 +22,15 @@ export const committees = [
     slug: 'achievement-week',
     name: "Achievement Week / Founders' Day Committee",
     description: 'Coordinates national recognition programs and awards for contributions to the community.',
+    // Featured programs shown at the top of the committee's page.
+    programs: [
+      {
+        to: '/essay-contest',
+        eyebrow: 'For high school seniors',
+        title: 'International High School Essay Contest',
+        text: 'This year\'s topic, deadline, scholarship awards, rules and the application to download.',
+      },
+    ],
   },
   {
     slug: 'social-action',

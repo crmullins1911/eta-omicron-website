@@ -48,6 +48,12 @@ const pages = {
     description: 'Location, hours, meetings and contact information for the Eta Omicron Chapter House.',
     crumbs: ['Chapter House'],
   },
+  '/essay-contest': {
+    title: 'High School Essay Contest' + SUFFIX,
+    description:
+      'Omega Psi Phi International High School Essay Contest: this year\'s topic, deadline, scholarship awards, rules and the application to download. Open to college-bound high school seniors.',
+    crumbs: [{ label: 'Committees', path: '/committees' }, { label: 'Achievement Week', path: '/committees/achievement-week' }, 'Essay Contest'],
+  },
   '/status': {
     title: 'Website Status' + SUFFIX,
     description: 'Website diagnostics.',
