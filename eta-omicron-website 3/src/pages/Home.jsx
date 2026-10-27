@@ -11,6 +11,7 @@ import { eventSlug } from '../seo'
 import { sitePhotos } from '../data/sitePhotos'
 import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
+import { essayContest } from '../data/essayContest'
 
 // "Editorial Night" home page.
 // Render order on first load:
@@ -27,6 +28,8 @@ function useUpcoming(limit) {
 
 export default function Home() {
   const upcoming = useUpcoming(3)
+  const now = useNow()
+  const contestOpen = now <= new Date(essayContest.deadline).getTime()
 
   return (
     <div>
@@ -91,6 +94,27 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Shown until the essay contest deadline passes (set in src/data/essayContest.js). */}
+      {contestOpen && (
+        <aside className="border-t border-gold/35 bg-plum/40">
+          <div className="container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-5">
+            <p className="text-lg">
+              <span className="eyebrow mr-3">Now accepting entries</span>
+              <span className="font-display text-xl font-semibold">High School Essay Contest</span>
+              <span className="text-ink/75"> · due {essayContest.deadlineText}</span>
+            </p>
+            <Link
+              to="/essay-contest"
+              {...intent('/essay-contest')}
+              data-track="home: essay contest notice"
+              className="rounded-full border border-gold px-5 py-2.5 font-semibold text-gold hover:bg-gold hover:text-night"
+            >
+              Details &amp; application →
+            </Link>
+          </div>
+        </aside>
+      )}
 
       <LazyHydrate id="home-news" as="section" className="border-y border-gold/35" data-track-section="home-news" component={EventsAndNews} />
 

@@ -29,6 +29,7 @@ export const BrothersLogin = lazyPage('src/pages/brothers/Login.jsx', () => impo
 export const BrothersDashboard = lazyPage('src/pages/brothers/Dashboard.jsx', () => import('./pages/brothers/Dashboard'))
 export const News = lazyPage('src/pages/News.jsx', () => import('./pages/News'))
 export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import('./pages/ChapterHouse'))
+export const EssayContest = lazyPage('src/pages/EssayContest.jsx', () => import('./pages/EssayContest'))
 export const Status = lazyPage('src/pages/Status.jsx', () => import('./pages/Status'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
 
@@ -41,6 +42,7 @@ export function pageForPath(pathname) {
   if (p === '/media') return Media
   if (p === '/news') return News
   if (p === '/chapter-house') return ChapterHouse
+  if (p === '/essay-contest') return EssayContest
   if (p === '/status') return Status
   if (p === '/committees') return Committees
   if (p.startsWith('/committees/')) return CommitteeDetail
@@ -65,6 +67,7 @@ export const publicPaths = [
   '/media',
   '/news',
   '/chapter-house',
+  '/essay-contest',
 ]
 
 /** Pages prerendered for speed but kept out of search results. */

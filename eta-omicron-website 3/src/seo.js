@@ -48,6 +48,12 @@ const pages = {
     description: 'Location, hours, meetings and contact information for the Eta Omicron Chapter House.',
     crumbs: ['Chapter House'],
   },
+  '/essay-contest': {
+    title: 'High School Essay Contest' + SUFFIX,
+    description:
+      'Omega Psi Phi International High School Essay Contest: this year\'s topic, deadline, scholarship awards, rules and the application to download. Open to college-bound high school seniors.',
+    crumbs: [{ label: 'Committees', path: '/committees' }, { label: 'Achievement Week', path: '/committees/achievement-week' }, 'Essay Contest'],
+  },
   '/status': {
     title: 'Website Status' + SUFFIX,
     description: 'Website diagnostics.',
@@ -124,7 +130,7 @@ function organization() {
     alternateName: 'Eta Omicron Chapter',
     url: SITE_URL + '/',
     logo: SITE_URL + '/brand/crest-192.png',
-    email: 'info@etaomicron.org',
+    email: 'EtaOmicronQues@gmail.com',
     parentOrganization: { '@type': 'Organization', name: 'Omega Psi Phi Fraternity, Inc.' },
   }
 }
