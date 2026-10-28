@@ -272,3 +272,53 @@ input:focus-visible {
     animation: none;
   }
 }
+
+/* Photo strip (home page, src/components/PhotoStrip.jsx).
+   Still and swipeable by default; slides on its own only for visitors who haven't asked for
+   reduced motion. The track holds the photos twice, so sliding it left by half loops seamlessly. */
+.photo-strip {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.photo-strip::-webkit-scrollbar {
+  display: none;
+}
+.photo-strip-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0 1rem;
+}
+.photo-strip-item {
+  flex: 0 0 auto;
+  width: clamp(220px, 32vw, 360px);
+  aspect-ratio: 4 / 3;
+}
+.photo-strip-item[aria-hidden='true'] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .photo-strip {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .photo-strip-track {
+    padding: 0;
+    animation: photo-strip-scroll var(--strip-duration, 60s) linear infinite;
+  }
+  .photo-strip-item[aria-hidden='true'] {
+    display: block;
+  }
+  .photo-strip:hover .photo-strip-track,
+  .photo-strip:focus-within .photo-strip-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes photo-strip-scroll {
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
