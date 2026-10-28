@@ -48,6 +48,12 @@ const pages = {
     description: 'Location, hours, meetings and contact information for the Eta Omicron Chapter House.',
     crumbs: ['Chapter House'],
   },
+  '/achievement-week': {
+    title: 'Achievement Week 2026' + SUFFIX,
+    description:
+      'Achievement Week 2026 (November 15–21) with the Eta Omicron Chapter of Omega Psi Phi: worship, fellowship, a candlelight vigil, the Charles R. Drew Blood Drive, STEM, mentoring and Project UPLIFT.',
+    crumbs: [{ label: 'Committees', path: '/committees' }, { label: 'Achievement Week', path: '/committees/achievement-week' }, 'Schedule'],
+  },
   '/essay-contest': {
     title: 'High School Essay Contest' + SUFFIX,
     description:

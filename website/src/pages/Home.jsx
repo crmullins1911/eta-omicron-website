@@ -12,6 +12,7 @@ import { sitePhotos } from '../data/sitePhotos'
 import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
 import { essayContest } from '../data/essayContest'
+import { achievementWeek } from '../data/achievementWeek'
 
 // "Editorial Night" home page.
 // Render order on first load:
@@ -30,6 +31,8 @@ export default function Home() {
   const upcoming = useUpcoming(3)
   const now = useNow()
   const contestOpen = now <= new Date(essayContest.deadline).getTime()
+  const showWeek =
+    startOfDay(now) >= toDate(achievementWeek.noticeFrom).getTime() && startOfDay(now) <= toDate(achievementWeek.endDate).getTime()
 
   return (
     <div>
@@ -111,6 +114,27 @@ export default function Home() {
               className="rounded-full border border-gold px-5 py-2.5 font-semibold text-gold hover:bg-gold hover:text-night"
             >
               Details &amp; application →
+            </Link>
+          </div>
+        </aside>
+      )}
+
+      {/* Shown from noticeFrom through the last day of Achievement Week (set in src/data/achievementWeek.js). */}
+      {showWeek && (
+        <aside className={`${contestOpen ? '' : 'border-t'} border-gold/35 bg-plum/40`}>
+          <div className={`container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-5 ${contestOpen ? 'border-t border-gold/20' : ''}`}>
+            <p className="text-lg">
+              <span className="eyebrow mr-3">{achievementWeek.dateText}</span>
+              <span className="font-display text-xl font-semibold">Achievement Week {achievementWeek.year}</span>
+              <span className="text-ink/75"> · 7 days of worship, fellowship and service</span>
+            </p>
+            <Link
+              to="/achievement-week"
+              {...intent('/achievement-week')}
+              data-track="home: achievement week notice"
+              className="rounded-full border border-gold px-5 py-2.5 font-semibold text-gold hover:bg-gold hover:text-night"
+            >
+              See the schedule →
             </Link>
           </div>
         </aside>

@@ -10,6 +10,7 @@ import {
   CommitteeDetail,
   News,
   ChapterHouse,
+  AchievementWeek,
   EssayContest,
   EssayApply,
   Status,
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/media" element={<Media />} />
         <Route path="/news" element={<News />} />
         <Route path="/chapter-house" element={<ChapterHouse />} />
+        <Route path="/achievement-week" element={<AchievementWeek />} />
         <Route path="/essay-contest" element={<EssayContest />} />
         <Route path="/essay-contest/apply" element={<EssayApply />} />
         <Route path="/status" element={<Status />} />
