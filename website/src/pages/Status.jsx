@@ -268,6 +268,9 @@ function emptyAdvice(id) {
 function errorAdvice(c, status, body) {
   const code = body?.code || ''
   const msg = body?.message || body?.error || ''
+  if (/permission denied for function/i.test(msg)) {
+    return `A database rule uses a function visitors aren't allowed to run (${msg}). Run supabase/migrations/20261028_fix_is_officer_public_access.sql in the Supabase SQL editor.`
+  }
   if (status === 401 || /JWT|apikey|Invalid API key/i.test(msg)) {
     return 'Supabase rejected the website\'s key. VITE_SUPABASE_ANON_KEY in Vercel is wrong or from a different project. Copy the "anon public" key from Supabase → Project Settings → API, update it in Vercel, and redeploy.'
   }

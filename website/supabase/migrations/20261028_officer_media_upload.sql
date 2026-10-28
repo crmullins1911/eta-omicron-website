@@ -17,8 +17,9 @@ as $$
     false
   );
 $$;
-revoke all on function public.is_officer() from public, anon;
-grant execute on function public.is_officer() to authenticated, service_role;
+-- Visitors (anon) must be able to call this too: the member app's events/members rules use it, and
+-- it simply returns false for anyone not signed in.
+grant execute on function public.is_officer() to anon, authenticated, service_role;
 
 -- 1. Media table. Created if it doesn't exist yet; otherwise just gains the two new columns.
 create table if not exists public.media_items (

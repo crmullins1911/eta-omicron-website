@@ -18,16 +18,18 @@ returns boolean language sql stable security definer set search_path = public as
     (select m.is_officer from public.members m where m.auth_user_id = auth.uid() limit 1),
     false);
 $$;
-revoke all on function public.is_officer() from public, anon;
-grant execute on function public.is_officer() to authenticated, service_role;
+-- Visitors (anon) must be able to call this too: the member app's events/members rules use it, and
+-- it simply returns false for anyone not signed in.
+grant execute on function public.is_officer() to anon, authenticated, service_role;
 
 -- Is the signed-in user on the chapter roster? (Used for Brothers Only content.)
 create or replace function public.is_member()
 returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.members m where m.auth_user_id = auth.uid());
 $$;
-revoke all on function public.is_member() from public, anon;
-grant execute on function public.is_member() to authenticated, service_role;
+-- Visitors (anon) must be able to call this too: the member app's events/members rules use it, and
+-- it simply returns false for anyone not signed in.
+grant execute on function public.is_member() to anon, authenticated, service_role;
 
 -- ---------------------------------------------------------------------------------------------
 -- 1. site_content: single pieces of text. Edit only the "value" column. Empty = not shown.
