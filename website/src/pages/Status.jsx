@@ -27,6 +27,8 @@ const CHECKS = [
     path: 'events?select=title,event_date&on_website=eq.true&order=event_date.asc',
   },
   { id: 'media', label: 'Media items', what: 'Media page', path: 'media_items?select=title,type,url&order=created_at.desc' },
+  { id: 'content', label: 'Editable site text', what: 'About Us history, Chapter House, home photos', path: 'site_content?select=key,value' },
+  { id: 'officers', label: 'Executive Committee', what: 'About Us page', path: 'site_officers?select=role,name&order=sort_order.asc' },
   {
     id: 'docs',
     label: 'Committee documents',
@@ -253,6 +255,9 @@ function emptyAdvice(id) {
       return 'The media_items table is empty, or visitors are not allowed to read it. Add a row in Table Editor → media_items, and make sure the one-time setup script was run (it adds the "Public can read media" rule).'
     case 'docs':
       return 'No committee documents posted yet (or visitors are not allowed to read them; run the one-time setup script).'
+    case 'content':
+    case 'officers':
+      return 'This table is empty or not readable. Run supabase/migrations/20261028_editable_site_content.sql in the Supabase SQL editor.'
     case 'posts':
       return 'No feed posts shared yet. In the app, tap "Share to website" under a post.'
     default:

@@ -9,6 +9,7 @@ import { intent } from '../lib/prefetch'
 import { downloadIcs } from '../lib/calendar'
 import { eventSlug } from '../seo'
 import { sitePhotos } from '../data/sitePhotos'
+import useSiteContent from '../hooks/useSiteContent'
 import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
 import PhotoStrip from '../components/PhotoStrip'
@@ -155,6 +156,8 @@ export default function Home() {
 function EventsAndNews() {
   const upcoming = useUpcoming(3)
   const latest = useNewsFeed()[0]
+  const c = useSiteContent()
+  const newsPhoto = c.home_news_photo_url ? { src: c.home_news_photo_url, alt: c.home_news_photo_alt || '' } : sitePhotos.news
   return (
     <div className="container-page py-20 flex flex-wrap gap-14">
       <div className="flex-[999_1_560px] min-w-0">
@@ -206,7 +209,7 @@ function EventsAndNews() {
         {latest?.image ? (
           <img src={latest.image} alt="" loading="lazy" decoding="async" className="h-[200px] w-full rounded object-cover" />
         ) : (
-          <Photo photo={sitePhotos.news} className="h-[200px] w-full" />
+          <Photo photo={newsPhoto} className="h-[200px] w-full" />
         )}
         {latest ? (
           <>

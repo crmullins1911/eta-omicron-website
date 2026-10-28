@@ -5,6 +5,7 @@ import { restSelect, restSignUrls } from './rest'
 import {
   events as placeholderEvents,
   mediaItems as placeholderMedia,
+  officers as placeholderOfficers,
   committees,
 } from '../data/placeholders'
 
@@ -42,6 +43,31 @@ export const mediaQuery = {
       select: 'title,type,url,created_at',
       order: 'created_at.desc',
     }),
+}
+
+// Editable text from the "site_content" table (About history, Chapter House, home page photos),
+// as { key: value }. Empty values are left out, so the page falls back to its built-in text.
+export const siteContentQuery = {
+  key: 'site:content',
+  ttl: 5 * MINUTE,
+  fallback: {},
+  fetch: () =>
+    restSelect('site_content', { select: 'key,value' }).then((rows) =>
+      Object.fromEntries(rows.filter((r) => r.value?.trim()).map((r) => [r.key, r.value.trim()]))
+    ),
+}
+
+// Executive Committee from "site_officers". Rows without a name are skipped; if none have a name
+// yet, the built-in placeholder list is shown.
+export const officersQuery = {
+  key: 'site:officers',
+  ttl: 5 * MINUTE,
+  fallback: placeholderOfficers,
+  emptyIsFallback: true,
+  fetch: () =>
+    restSelect('site_officers', { select: 'role,name,bio,photo_url', order: 'sort_order.asc,id.asc' }).then((rows) =>
+      rows.filter((o) => o.name?.trim()).map((o) => ({ role: o.role, name: o.name.trim(), bio: o.bio || '', photo: o.photo_url || '' }))
+    ),
 }
 
 // Committee documents: one query per committee page.
@@ -88,5 +114,5 @@ export const appPostsQuery = {
 
 /** Queries to bake into the HTML at build time. */
 export function prerenderQueries() {
-  return [eventsQuery, mediaQuery, appPostsQuery, ...committees.map((c) => committeeDocsQuery(c.slug))]
+  return [eventsQuery, mediaQuery, appPostsQuery, siteContentQuery, officersQuery, ...committees.map((c) => committeeDocsQuery(c.slug))]
 }
