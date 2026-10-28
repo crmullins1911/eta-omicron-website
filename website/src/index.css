@@ -322,3 +322,16 @@ input:focus-visible {
     transform: translateX(calc(-50% - 0.5rem));
   }
 }
+
+/* Founders page: the story panel eases in when a different founder is picked. */
+@media (prefers-reduced-motion: no-preference) {
+  .founder-swap {
+    animation: founder-swap 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes founder-swap {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}

@@ -4,6 +4,7 @@ import { intent } from '../lib/prefetch'
 
 const links = [
   { to: '/about', label: 'About' },
+  { to: '/founders', label: 'Founders' },
   { to: '/events', label: 'Events' },
   { to: '/committees', label: 'Committees' },
   { to: '/media', label: 'Media' },

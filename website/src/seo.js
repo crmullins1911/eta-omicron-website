@@ -23,6 +23,12 @@ const pages = {
     description: 'The history, leadership and guiding principles of the Eta Omicron Chapter of Omega Psi Phi Fraternity, Inc.',
     crumbs: ['About Us'],
   },
+  '/founders': {
+    title: 'Our Founders' + SUFFIX,
+    description:
+      'Edgar Amos Love, Oscar James Cooper, Frank Coleman and Ernest Everett Just founded Omega Psi Phi Fraternity, Inc. at Howard University on November 17, 1911.',
+    crumbs: ['Founders'],
+  },
   '/events': {
     title: 'Events' + SUFFIX,
     description: 'Upcoming chapter events, community service days and the Talent Hunt scholarship competition from the Eta Omicron Chapter.',
