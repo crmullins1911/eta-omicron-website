@@ -3,9 +3,9 @@
 // Sources: Wikipedia (Edgar Amos Love, Oscar James Cooper, Ernest Everett Just) and BlackPast.org
 // (Frank Charles Coleman), checked October 2026.
 //
-// Photos: add each founder's portrait in Supabase > site_content (rows founder_<slug>_photo, e.g.
-// founder_love_photo) by pasting an image link; the photo upload in Brothers Only gives you one.
-// Until a photo is set, a designed monogram tile is shown.
+// Photos: portraits supplied by the chapter live in public/founders/. To swap one without a code
+// change, paste an image link into Supabase > site_content (row founder_<slug>_photo, e.g.
+// founder_love_photo); that link takes priority.
 
 export const founding = {
   date: 'November 17, 1911',
@@ -22,6 +22,7 @@ export const founding = {
 export const founders = [
   {
     slug: 'love',
+    photo: '/founders/love.webp',
     name: 'Edgar Amos Love',
     title: 'Bishop',
     years: '1891–1974',
@@ -42,6 +43,7 @@ export const founders = [
   },
   {
     slug: 'cooper',
+    photo: '/founders/cooper.webp',
     name: 'Oscar James Cooper',
     title: 'Dr.',
     years: '1888–1972',
@@ -62,6 +64,7 @@ export const founders = [
   },
   {
     slug: 'coleman',
+    photo: '/founders/coleman.webp',
     name: 'Frank Coleman',
     title: 'Professor',
     years: '1890–1967',
@@ -82,6 +85,7 @@ export const founders = [
   },
   {
     slug: 'just',
+    photo: '/founders/just.webp',
     name: 'Ernest Everett Just',
     title: 'Dr.',
     years: '1883–1941',

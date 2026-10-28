@@ -6,7 +6,7 @@ import useSiteContent from '../hooks/useSiteContent'
 import { intent } from '../lib/prefetch'
 
 // The four founders of Omega Psi Phi. Content lives in src/data/founders.js; portraits come from
-// Supabase site_content (founder_<slug>_photo). Pick a founder card (click, tap, or arrow keys) to
+// public/founders/ (or a link in Supabase site_content founder_<slug>_photo). Pick a founder card (click, tap, or arrow keys) to
 // read his story below; the choice is kept in the address (?founder=just) so it can be shared.
 
 const PRINCIPLES = ['Manhood', 'Scholarship', 'Perseverance', 'Uplift']
@@ -20,7 +20,7 @@ export default function Founders() {
   const panelRef = useRef(null)
   const picked = useRef(false)
 
-  const photoFor = (f) => content[`founder_${f.slug}_photo`] || ''
+  const photoFor = (f) => content[`founder_${f.slug}_photo`] || f.photo || ''
 
   function select(i, { focus = false, scroll = false } = {}) {
     const n = (i + founders.length) % founders.length
@@ -220,7 +220,7 @@ function Portrait({ founder, src, className = '', large = false }) {
         alt={`Portrait of ${founder.name}`}
         loading="lazy"
         decoding="async"
-        className={`object-cover grayscale-[15%] ${className}`}
+        className={`object-cover object-[50%_20%] ${className}`}
       />
     )
   }
