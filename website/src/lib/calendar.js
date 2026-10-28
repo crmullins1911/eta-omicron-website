@@ -9,7 +9,11 @@ export function downloadIcs(e) {
   if (timed) {
     const [hh, mm] = e.time.split(':').map(Number)
     const start = new Date(y, m - 1, d, hh, mm)
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000) // assume 2 hours
+    let end = new Date(start.getTime() + 2 * 60 * 60 * 1000) // assume 2 hours unless an end time is given
+    if (e.endTime && /^\d{2}:\d{2}/.test(e.endTime)) {
+      const [eh, em] = e.endTime.split(':').map(Number)
+      end = new Date(y, m - 1, d, eh, em)
+    }
     const fmt = (t) => `${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}T${pad(t.getHours())}${pad(t.getMinutes())}00`
     dtStart = `DTSTART:${fmt(start)}`
     dtEnd = `DTEND:${fmt(end)}`
@@ -34,7 +38,7 @@ export function downloadIcs(e) {
     `SUMMARY:${esc(e.title)}`,
     e.location ? `LOCATION:${esc(e.location)}` : null,
     e.description ? `DESCRIPTION:${esc(e.description)}` : null,
-    `URL:${SITE_URL}/events#${eventSlug(e)}`,
+    `URL:${e.url || `${SITE_URL}/events#${eventSlug(e)}`}`,
     'END:VEVENT',
     'END:VCALENDAR',
   ]

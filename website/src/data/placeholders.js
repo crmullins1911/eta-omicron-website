@@ -25,6 +25,12 @@ export const committees = [
     // Featured programs shown at the top of the committee's page.
     programs: [
       {
+        to: '/achievement-week',
+        eyebrow: 'November 15–21, 2026',
+        title: 'Achievement Week 2026 Schedule',
+        text: 'Every event of the week, day by day: times, locations, points of contact and how to give to St. Jude.',
+      },
+      {
         to: '/essay-contest',
         eyebrow: 'For high school seniors',
         title: 'International High School Essay Contest',

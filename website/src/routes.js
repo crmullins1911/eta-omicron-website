@@ -30,6 +30,7 @@ export const BrothersDashboard = lazyPage('src/pages/brothers/Dashboard.jsx', ()
 export const News = lazyPage('src/pages/News.jsx', () => import('./pages/News'))
 export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import('./pages/ChapterHouse'))
 export const EssayContest = lazyPage('src/pages/EssayContest.jsx', () => import('./pages/EssayContest'))
+export const AchievementWeek = lazyPage('src/pages/AchievementWeek.jsx', () => import('./pages/AchievementWeek'))
 export const EssayApply = lazyPage('src/pages/EssayApply.jsx', () => import('./pages/EssayApply'))
 export const Status = lazyPage('src/pages/Status.jsx', () => import('./pages/Status'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
@@ -43,6 +44,7 @@ export function pageForPath(pathname) {
   if (p === '/media') return Media
   if (p === '/news') return News
   if (p === '/chapter-house') return ChapterHouse
+  if (p === '/achievement-week') return AchievementWeek
   if (p === '/essay-contest') return EssayContest
   if (p === '/essay-contest/apply') return EssayApply
   if (p === '/status') return Status
@@ -69,6 +71,7 @@ export const publicPaths = [
   '/media',
   '/news',
   '/chapter-house',
+  '/achievement-week',
   '/essay-contest',
 ]
 
