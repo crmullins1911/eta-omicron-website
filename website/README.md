@@ -86,6 +86,10 @@ automatically prefer live data over placeholders:
 For file uploads (forms, photos, videos), upload to a Supabase Storage bucket and put the
 public URL in `file_url` / `url`.
 
+**Photos and videos:** officers can post them from Brothers Only (the "Add Photos & Videos" form).
+One-time setup: run `supabase/migrations/20261028_officer_media_upload.sql` in the Supabase SQL
+editor. Photos are resized before upload; videos must be MP4 (or iPhone MOV), 50 MB or less.
+
 Suggested next step: add simple admin forms inside the Brothers Only dashboard
 (`src/pages/brothers/Dashboard.jsx`) so committee members can add events/documents/media
 without touching Supabase directly.

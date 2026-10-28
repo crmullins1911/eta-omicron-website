@@ -4,10 +4,12 @@ import { useAuth, getSupabase } from '../../context/AuthContext'
 import LazyMount from '../../components/LazyMount'
 
 const SiteHealth = lazy(() => import('../../components/SiteHealth'))
+const MediaUpload = lazy(() => import('../../components/MediaUpload'))
 
-// Website Health is officers only. The database enforces this too (rum_summary() checks
-// members.is_officer — see supabase/migrations/20261028_site_health_officers_only.sql);
-// this just keeps the panel off the page for everyone else. Any error hides it.
+// Website Health and the photo/video upload form are officers only. The database enforces this too
+// (members.is_officer — see supabase/migrations/20261028_site_health_officers_only.sql and
+// 20261028_officer_media_upload.sql); this just keeps them off the page for everyone else.
+// Any error hides them.
 function useIsOfficer(userId) {
   const [isOfficer, setIsOfficer] = useState(false)
   useEffect(() => {
@@ -68,6 +70,14 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
+
+        {isOfficer && (
+          <div className="mt-6">
+            <Suspense fallback={<div className="skeleton h-64" />}>
+              <MediaUpload />
+            </Suspense>
+          </div>
+        )}
 
         {isOfficer && (
           <div className="mt-6">
