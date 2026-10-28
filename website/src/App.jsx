@@ -5,6 +5,7 @@ import {
   Home,
   About,
   Founders,
+  OmegaBallTable,
   Events,
   Media,
   Committees,
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/essay-contest" element={<EssayContest />} />
         <Route path="/essay-contest/apply" element={<EssayApply />} />
         <Route path="/status" element={<Status />} />
+        <Route path="/omega-ball/table" element={<OmegaBallTable />} />
 
         <Route path="/brothers/login" element={<BrothersLogin />} />
         <Route element={<ProtectedRoute />}>

@@ -48,6 +48,9 @@
   "functions": {
     "api/essay-submit.js": {
       "includeFiles": "public/files/**"
+    },
+    "api/omega-ball-submit.js": {
+      "includeFiles": "public/files/**"
     }
   }
 }

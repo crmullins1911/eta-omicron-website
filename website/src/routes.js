@@ -33,6 +33,7 @@ export const ChapterHouse = lazyPage('src/pages/ChapterHouse.jsx', () => import(
 export const EssayContest = lazyPage('src/pages/EssayContest.jsx', () => import('./pages/EssayContest'))
 export const AchievementWeek = lazyPage('src/pages/AchievementWeek.jsx', () => import('./pages/AchievementWeek'))
 export const EssayApply = lazyPage('src/pages/EssayApply.jsx', () => import('./pages/EssayApply'))
+export const OmegaBallTable = lazyPage('src/pages/OmegaBallTable.jsx', () => import('./pages/OmegaBallTable'))
 export const Status = lazyPage('src/pages/Status.jsx', () => import('./pages/Status'))
 export const NotFound = lazyPage('src/pages/NotFound.jsx', () => import('./pages/NotFound'))
 
@@ -50,6 +51,7 @@ export function pageForPath(pathname) {
   if (p === '/essay-contest') return EssayContest
   if (p === '/essay-contest/apply') return EssayApply
   if (p === '/status') return Status
+  if (p === '/omega-ball/table') return OmegaBallTable
   if (p === '/committees') return Committees
   if (p.startsWith('/committees/')) return CommitteeDetail
   if (p === '/brothers/login') return BrothersLogin
@@ -79,7 +81,7 @@ export const publicPaths = [
 ]
 
 /** Pages prerendered for speed but kept out of search results. */
-export const privatePrerenderPaths = ['/essay-contest/apply', '/brothers/login', '/brothers', '/status']
+export const privatePrerenderPaths = ['/essay-contest/apply', '/omega-ball/table', '/brothers/login', '/brothers', '/status']
 
 /** Pages visitors most often go to next; prefetched while the browser is idle. */
 export const likelyNext = ['/events', '/about', '/committees', '/media']
