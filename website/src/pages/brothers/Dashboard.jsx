@@ -1,9 +1,29 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import PageBanner from '../../components/PageBanner'
-import { useAuth } from '../../context/AuthContext'
+import { useAuth, getSupabase } from '../../context/AuthContext'
 import LazyMount from '../../components/LazyMount'
 
 const SiteHealth = lazy(() => import('../../components/SiteHealth'))
+
+// Website Health is officers only. The database enforces this too (rum_summary() checks
+// members.is_officer — see supabase/migrations/20261028_site_health_officers_only.sql);
+// this just keeps the panel off the page for everyone else. Any error hides it.
+function useIsOfficer(userId) {
+  const [isOfficer, setIsOfficer] = useState(false)
+  useEffect(() => {
+    let active = true
+    setIsOfficer(false)
+    if (!userId) return
+    getSupabase()
+      .then((supabase) => supabase.rpc('is_officer'))
+      .then(({ data, error }) => active && setIsOfficer(!error && data === true))
+      .catch(() => active && setIsOfficer(false))
+    return () => {
+      active = false
+    }
+  }, [userId])
+  return isOfficer
+}
 
 // This is the landing page for authenticated members. Add sections here
 // for financial statements, dues status, meeting minutes, etc. by
@@ -13,6 +33,7 @@ const SiteHealth = lazy(() => import('../../components/SiteHealth'))
 
 export default function Dashboard() {
   const { user, signOut } = useAuth()
+  const isOfficer = useIsOfficer(user?.id)
 
   return (
     <div>
@@ -48,13 +69,15 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <LazyMount minHeight={360}>
-            <Suspense fallback={<div className="skeleton h-80" />}>
-              <SiteHealth />
-            </Suspense>
-          </LazyMount>
-        </div>
+        {isOfficer && (
+          <div className="mt-6">
+            <LazyMount minHeight={360}>
+              <Suspense fallback={<div className="skeleton h-80" />}>
+                <SiteHealth />
+              </Suspense>
+            </LazyMount>
+          </div>
+        )}
 
         <p className="mt-8 text-sm text-ink/60">
           For full chapter management (member records, payments, etc.), go to{' '}
