@@ -1,5 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import PageBanner from '../../components/PageBanner'
+import { intent } from '../../lib/prefetch'
 import { useAuth, getSupabase } from '../../context/AuthContext'
 import LazyMount from '../../components/LazyMount'
 import { FinancialStanding, MeetingMinutes } from '../../components/BrothersPanels'
@@ -53,6 +55,20 @@ export default function Dashboard() {
             Sign Out
           </button>
         </div>
+
+        <Link
+          to="/omega-ball/table"
+          {...intent('/omega-ball/table')}
+          data-track="brothers: omega ball table"
+          className="tilt mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-gold/50 bg-plum/60 p-6 hover:border-gold"
+        >
+          <span>
+            <span className="eyebrow">Omega Ball · November 14, 2026</span>
+            <span className="mt-1 block font-display text-2xl font-semibold text-ink">Reserve a table: sign the installment agreement online</span>
+            <span className="mt-1 block text-sm text-ink/70">Table of 8 · $480 · $120 deposit · paid in full by December 15</span>
+          </span>
+          <span className="rounded-full bg-gold px-5 py-2.5 font-semibold text-night">Start →</span>
+        </Link>
 
         <div className="grid gap-6 sm:grid-cols-2 items-start">
           <FinancialStanding userId={user?.id} />

@@ -23,6 +23,12 @@ const pages = {
     description: 'The history, leadership and guiding principles of the Eta Omicron Chapter of Omega Psi Phi Fraternity, Inc.',
     crumbs: ['About Us'],
   },
+  '/omega-ball/table': {
+    title: '2026 Omega Ball Table Reservation' + SUFFIX,
+    description: 'Table reservation and payment installment agreement for the 2026 Omega Ball, for financial Brothers of the Eta Omicron Chapter.',
+    noindex: true,
+    crumbs: [{ label: 'Brothers Only', path: '/brothers' }, 'Omega Ball Table'],
+  },
   '/founders': {
     title: 'Our Founders' + SUFFIX,
     description:
