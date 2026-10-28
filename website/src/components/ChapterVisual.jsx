@@ -1,15 +1,27 @@
 import { useEffect, useRef } from 'react'
 import { sitePhotos } from '../data/sitePhotos'
+import useSiteContent from '../hooks/useSiteContent'
 
 /**
- * Full-width chapter photo or video band on the home page (set it in src/data/sitePhotos.js).
+ * Full-width chapter photo or video band on the home page. Set it in Supabase (site_content rows
+ * starting "home_feature_"); src/data/sitePhotos.js is the fallback. A link ending in .mp4/.mov/.webm
+ * is treated as a video.
  *
  * A video plays muted and looping only while it's on screen, never for visitors who ask for
  * reduced motion (they see the poster image), and doesn't download until it's about to be seen.
  * Until media is supplied, a designed band with the chapter's motto is shown instead.
  */
 export default function ChapterVisual() {
-  const media = sitePhotos.feature
+  const c = useSiteContent()
+  const media = c.home_feature_url
+    ? {
+        type: /\.(mp4|mov|webm)(\?|#|$)/i.test(c.home_feature_url) ? 'video' : 'image',
+        src: c.home_feature_url,
+        poster: c.home_feature_poster || '',
+        alt: c.home_feature_alt || '',
+        caption: c.home_feature_caption || sitePhotos.feature.caption,
+      }
+    : { ...sitePhotos.feature, caption: c.home_feature_caption || sitePhotos.feature.caption }
   const videoRef = useRef(null)
 
   useEffect(() => {
@@ -26,7 +38,7 @@ export default function ChapterVisual() {
     )
     io.observe(v)
     return () => io.disconnect()
-  }, [])
+  }, [media.type, media.src])
 
   const caption = media?.caption || 'Brothers in service.'
 

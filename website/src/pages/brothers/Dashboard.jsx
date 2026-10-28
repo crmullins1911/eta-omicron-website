@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import PageBanner from '../../components/PageBanner'
 import { useAuth, getSupabase } from '../../context/AuthContext'
 import LazyMount from '../../components/LazyMount'
+import { FinancialStanding, MeetingMinutes } from '../../components/BrothersPanels'
 
 const SiteHealth = lazy(() => import('../../components/SiteHealth'))
 const MediaUpload = lazy(() => import('../../components/MediaUpload'))
@@ -27,11 +28,9 @@ function useIsOfficer(userId) {
   return isOfficer
 }
 
-// This is the landing page for authenticated members. Add sections here
-// for financial statements, dues status, meeting minutes, etc. by
-// querying whatever Supabase tables app.etaomicron.org already uses
-// (e.g. a "financial_records" or "dues" table), since this site shares
-// the same Supabase project and member accounts.
+// Landing page for signed-in brothers. Dues come from the member app's records; meeting minutes from
+// the "meeting_minutes" table (see src/components/BrothersPanels.jsx). This site shares the same
+// Supabase project and member accounts as app.etaomicron.org.
 
 export default function Dashboard() {
   const { user, signOut } = useAuth()
@@ -55,20 +54,9 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="p-6 rounded-lg border border-ink/10 bg-plum/60">
-            <h3 className="font-display text-2xl font-semibold text-ink mb-2">Financial Standing</h3>
-            <p className="text-ink/70 text-sm">
-              Placeholder &mdash; connect this to the financial data already tracked in
-              app.etaomicron.org (dues status, chapter balance, etc.) via a shared Supabase table.
-            </p>
-          </div>
-          <div className="p-6 rounded-lg border border-ink/10 bg-plum/60">
-            <h3 className="font-display text-2xl font-semibold text-ink mb-2">Meeting Minutes</h3>
-            <p className="text-ink/70 text-sm">
-              Placeholder &mdash; list recent meeting minutes and chapter documents here for members only.
-            </p>
-          </div>
+        <div className="grid gap-6 sm:grid-cols-2 items-start">
+          <FinancialStanding userId={user?.id} />
+          <MeetingMinutes />
         </div>
 
         {isOfficer && (

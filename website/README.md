@@ -72,19 +72,25 @@ in the Supabase dashboard) so member logins are shared between both sites.
 
 ## Making content editable without code changes
 
-Right now, most content (officers, history, committee list, placeholder events/media) lives
-in `src/data/placeholders.js` so the site works immediately with no backend setup. To make a
-section live-editable, create the corresponding Supabase table and the page will
-automatically prefer live data over placeholders:
+Every section that used to be a placeholder is now edited in **Supabase → Table Editor**. One-time
+setup: run `supabase/migrations/20261028_editable_site_content.sql` in the Supabase SQL editor (safe to
+re-run; it never overwrites text you've entered). Changes show on the site within about 5 minutes;
+redeploy if you want search engines to see them right away.
 
-| Page | Table | Columns |
+| What you see on the site | Table | How to edit |
 |---|---|---|
-| Events | `events` | `title`, `event_date`, `location`, `description` |
-| Committees | `committee_documents` | `committee_slug`, `title`, `file_url`, `category` |
-| Media | `media_items` | `title`, `type` (`image`/`video`), `url`, `created_at` |
+| About Us → Chapter History | `site_content` (key `history`) | Type in `value`. Blank line = new paragraph. |
+| About Us → Executive Committee | `site_officers` | One row per officer: `role`, `name`, `bio`, `photo_url`, `sort_order`. Rows without a name are hidden. |
+| Chapter House page | `site_content` (keys `chapter_house_*`) | Hours: one line each, `Saturdays \| 10:00 AM – 2:00 PM`. |
+| Home page big photo/video and news photo | `site_content` (keys `home_*`) | Paste a link (a Media page file link works). `.mp4` links play as video. |
+| Committee pages → documents | `committee_documents` | `committee_slug` (end of the page address), `title`, `file_url`, `category`. |
+| Brothers Only → Meeting Minutes | `meeting_minutes` | `meeting_date`, `title`, `summary`, `file_url`. Members only. |
+| Brothers Only → Financial Standing | *(automatic)* | Reads dues from the member app (`members`, `dues_payments`). |
+| Events | `events` (member app) | Turn on "Show on public website" in the app. |
+| Media | `media_items` | Officers use "Add Photos & Videos" in Brothers Only. |
 
-For file uploads (forms, photos, videos), upload to a Supabase Storage bucket and put the
-public URL in `file_url` / `url`.
+Every row in `site_content` has a `label` and `help` column explaining what it does; only edit
+`value`. Anything left empty falls back to the built-in text in `src/data/`.
 
 **Photos and videos:** officers can post them from Brothers Only (the "Add Photos & Videos" form).
 One-time setup: run `supabase/migrations/20261028_officer_media_upload.sql` in the Supabase SQL
