@@ -53,8 +53,10 @@ time, scroll depth, interactions), clicks and JavaScript errors into the `rum_ev
 emails, IPs or form contents; visitors with Global Privacy Control / Do Not Track are skipped.
 
 **One-time setup:** run `supabase/migrations/20261023_rum_events.sql` in the Supabase SQL editor.
-Visitors can only insert rows; signed-in brothers see the aggregated **Website Health** panel in
-Brothers Only (via `rum_summary()`), and the service role (Command Center) can query everything.
+Then run `supabase/migrations/20261028_site_health_officers_only.sql`.
+Visitors can only insert rows; **officers only** (`members.is_officer`) see the aggregated **Website Health**
+panel in Brothers Only (via `rum_summary()`, which checks officer status in the database), and the service
+role (Command Center) can query everything.
 Set `VITE_RUM_SAMPLE_RATE` below 1 if traffic ever gets large.
 
 ## Getting started
