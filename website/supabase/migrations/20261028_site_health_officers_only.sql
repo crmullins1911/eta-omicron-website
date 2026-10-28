@@ -20,8 +20,9 @@ as $$
   );
 $$;
 
-revoke all on function public.is_officer() from public, anon;
-grant execute on function public.is_officer() to authenticated, service_role;
+-- Visitors (anon) must be able to call this too: the member app's events/members rules use it, and
+-- it simply returns false for anyone not signed in.
+grant execute on function public.is_officer() to anon, authenticated, service_role;
 
 -- 2. Keep the existing summary query, unchanged, under a name only the service role can call.
 do $$
