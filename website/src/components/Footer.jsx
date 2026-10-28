@@ -33,6 +33,7 @@ export default function Footer() {
           <p className="eyebrow mb-3">Explore</p>
           <ul className="space-y-2 text-ink/85">
             <li><Link to="/about" className="hover:text-gold-light" {...intent('/about')}>About Us</Link></li>
+            <li><Link to="/founders" className="hover:text-gold-light" {...intent('/founders')}>Founders</Link></li>
             <li><Link to="/events" className="hover:text-gold-light" {...intent('/events')}>Events</Link></li>
             <li><Link to="/committees" className="hover:text-gold-light" {...intent('/committees')}>Committees</Link></li>
             <li><Link to="/media" className="hover:text-gold-light" {...intent('/media')}>Media</Link></li>

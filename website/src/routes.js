@@ -21,6 +21,7 @@ function lazyPage(file, loader) {
 export { default as Home } from './pages/Home'
 
 export const About = lazyPage('src/pages/About.jsx', () => import('./pages/About'))
+export const Founders = lazyPage('src/pages/Founders.jsx', () => import('./pages/Founders'))
 export const Events = lazyPage('src/pages/Events.jsx', () => import('./pages/Events'))
 export const Media = lazyPage('src/pages/Media.jsx', () => import('./pages/Media'))
 export const Committees = lazyPage('src/pages/committees/Committees.jsx', () => import('./pages/committees/Committees'))
@@ -40,6 +41,7 @@ export function pageForPath(pathname) {
   const p = normalize(pathname)
   if (p === '/') return null
   if (p === '/about') return About
+  if (p === '/founders') return Founders
   if (p === '/events') return Events
   if (p === '/media') return Media
   if (p === '/news') return News
@@ -65,6 +67,7 @@ export function preloadPath(pathname) {
 export const publicPaths = [
   '/',
   '/about',
+  '/founders',
   '/events',
   '/committees',
   ...committees.map((c) => `/committees/${c.slug}`),

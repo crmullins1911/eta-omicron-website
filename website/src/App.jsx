@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import {
   Home,
   About,
+  Founders,
   Events,
   Media,
   Committees,
@@ -28,6 +29,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/founders" element={<Founders />} />
         <Route path="/events" element={<Events />} />
         <Route path="/committees" element={<Committees />} />
         <Route path="/committees/:slug" element={<CommitteeDetail />} />
