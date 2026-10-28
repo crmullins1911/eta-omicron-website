@@ -11,6 +11,7 @@ import { eventSlug } from '../seo'
 import { sitePhotos } from '../data/sitePhotos'
 import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
+import PhotoStrip from '../components/PhotoStrip'
 import { essayContest } from '../data/essayContest'
 import { achievementWeek } from '../data/achievementWeek'
 
@@ -143,6 +144,8 @@ export default function Home() {
       <LazyHydrate id="home-news" as="section" className="border-y border-gold/35" data-track-section="home-news" component={EventsAndNews} />
 
       <LazyHydrate id="home-visual" as="section" className="container-page pt-20" data-track-section="home-visual" component={ChapterVisual} />
+
+      <LazyHydrate id="home-photos" as="section" data-track-section="home-photos" component={PhotoStrip} />
 
       <LazyHydrate id="home-explore" as="section" className="cv-auto" data-track-section="home-explore" component={QuickLinks} />
     </div>
