@@ -1,6 +1,7 @@
 import { useDeferredValue, useMemo, useState } from 'react'
 import PageBanner from '../components/PageBanner'
 import EventCard from '../components/EventCard'
+import TicketedEvents from '../components/TicketedEvents'
 import Seo from '../components/Seo'
 import useCachedQuery from '../hooks/useCachedQuery'
 import useNow, { startOfDay, toDate } from '../hooks/useNow'
@@ -54,6 +55,8 @@ export default function Events() {
       />
 
       <section className="container-page py-14" data-track-section="events">
+        <TicketedEvents />
+
         {source === 'fallback' && !loading && (
           <p className="text-sm text-ink/60 mb-6 italic">
             Showing placeholder events. Connect a Supabase "events" table to manage these live.
