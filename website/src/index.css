@@ -335,3 +335,111 @@ input:focus-visible {
     translate: 0 14px;
   }
 }
+
+/* ---- Holograms (src/components/Hologram.jsx) -------------------------------------------------
+   Graphics shown as if projected: iridescent sheen, scanlines, a moving gold beam, a light
+   flicker, a slow float and a glow underneath. Cursor tilt comes from .tilt above. */
+
+.holo {
+  margin: 0;
+  width: 100%;
+  max-width: var(--holo-w, 360px);
+  margin-inline: auto;
+}
+.holo-sm { --holo-w: 220px; }
+.holo-lg { --holo-w: 480px; }
+
+.holo-card {
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgb(207 174 90 / 0.4),
+    0 0 28px rgb(123 63 180 / 0.55),
+    0 0 70px rgb(207 174 90 / 0.14);
+}
+.holo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.92;
+  filter: saturate(1.12) contrast(1.05);
+}
+
+/* Iridescent sweep (gold → violet → cyan). */
+.holo-sheen,
+.holo-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.holo-sheen {
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgb(255 215 120 / 0.26) 42%,
+    rgb(170 110 255 / 0.3) 50%,
+    rgb(120 220 255 / 0.2) 58%,
+    transparent 75%
+  );
+  background-size: 300% 300%;
+  background-position: 100% 0;
+  mix-blend-mode: color-dodge;
+}
+/* Fine scanlines, plus a beam that travels down the image. */
+.holo-scan {
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 3px);
+}
+.holo-scan::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -25%;
+  height: 25%;
+  background: linear-gradient(transparent, rgb(207 174 90 / 0.2), transparent);
+}
+/* Projector glow under the image. */
+.holo-base {
+  display: block;
+  width: 70%;
+  height: 14px;
+  margin: 14px auto 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgb(207 174 90 / 0.55), rgb(123 63 180 / 0.25) 50%, transparent 70%);
+  filter: blur(4px);
+}
+
+/* Cut-out graphics (transparent background): no frame, the glow follows the artwork's shape and
+   the sheen and scanlines only cover the artwork itself. */
+.holo-cutout .holo-card {
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+}
+.holo-cutout .holo-img {
+  filter: saturate(1.12) drop-shadow(0 0 12px rgb(123 63 180 / 0.6)) drop-shadow(0 0 26px rgb(207 174 90 / 0.18));
+}
+.holo-cutout .holo-sheen,
+.holo-cutout .holo-scan {
+  -webkit-mask: var(--holo-mask) center / contain no-repeat;
+  mask: var(--holo-mask) center / contain no-repeat;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .holo { animation: holo-float 6s ease-in-out infinite; }
+  .holo-img { animation: holo-flicker 6s steps(1) infinite; }
+  .holo-sheen { animation: holo-sweep 7s linear infinite; }
+  .holo-scan::after { animation: holo-beam 4.5s linear infinite; }
+  .holo-base { animation: holo-pulse 6s ease-in-out infinite; }
+}
+
+@keyframes holo-float { 50% { translate: 0 -10px; } }
+@keyframes holo-sweep { to { background-position: -100% 0; } }
+@keyframes holo-beam { to { top: 100%; } }
+@keyframes holo-flicker {
+  0%, 91%, 100% { opacity: 0.92; }
+  92% { opacity: 0.68; }
+  94% { opacity: 0.86; }
+}
+@keyframes holo-pulse {
+  50% { opacity: 0.6; transform: scaleX(0.9); }
+}

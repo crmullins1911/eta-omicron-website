@@ -17,6 +17,7 @@ export default function About() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'About Us' }]}
         title="About Us"
         subtitle="Our history, our leadership, and the principles that guide us."
+        hologram={{ src: '/graphics/founders-1911.webp', alt: 'The four founders of Omega Psi Phi, November 17, 1911', width: 554, height: 554 }}
       />
 
       <section id="history" className="container-page py-14 scroll-mt-24">
