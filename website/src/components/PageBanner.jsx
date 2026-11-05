@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import Hologram from './Hologram'
 
 /**
  * PageBanner: the title block at the top of inner pages (eyebrow breadcrumb, serif title,
@@ -8,12 +9,14 @@ import { Link } from 'react-router-dom'
  *     title="Events"
  *     subtitle="Optional one-line description."
  *     breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]}
+ *     hologram={{ src: '/graphics/que-dog.webp', alt: '', cutout: true }}   // optional, computers and tablets
  *   />
  */
-export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
+export default function PageBanner({ title, subtitle, breadcrumb = [], hologram }) {
   return (
     <section className="depth-banner relative overflow-hidden border-b border-gold/35">
       {/* Back layer: a faint chapter emblem that drifts slower than the page as it scrolls. */}
+      {!hologram && (
       <img
         src="/brand/eta-omicron-360.webp"
         alt=""
@@ -24,7 +27,9 @@ export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
         fetchPriority="low"
         className="depth-back pointer-events-none absolute right-[4%] top-1/2 hidden h-[150%] w-auto -translate-y-1/2 opacity-[0.07] md:block"
       />
-      <div className="depth-front relative container-page pt-16 pb-12 md:pt-20 md:pb-14">
+      )}
+      <div className="depth-front relative container-page pt-16 pb-12 md:pt-20 md:pb-14 md:flex md:items-center md:justify-between md:gap-10">
+        <div className="min-w-0">
         {breadcrumb.length > 0 && (
           <nav aria-label="Breadcrumb" className="eyebrow">
             {breadcrumb.map((crumb, i) => (
@@ -43,6 +48,12 @@ export default function PageBanner({ title, subtitle, breadcrumb = [] }) {
         )}
         <h1 className="mt-4 font-display text-5xl md:text-6xl font-semibold tracking-tight text-ink">{title}</h1>
         {subtitle && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink/75">{subtitle}</p>}
+        </div>
+        {hologram && (
+          <div className="hidden md:block shrink-0 w-[220px]">
+            <Hologram size="sm" {...hologram} />
+          </div>
+        )}
       </div>
     </section>
   )

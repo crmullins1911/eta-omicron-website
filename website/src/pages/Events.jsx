@@ -52,6 +52,7 @@ export default function Events() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Events' }]}
         title="Events"
         subtitle="Everything happening with the chapter this year."
+        hologram={{ src: '/graphics/que-dog.webp', alt: '', cutout: true, width: 493, height: 621 }}
       />
 
       <section className="container-page py-14" data-track-section="events">

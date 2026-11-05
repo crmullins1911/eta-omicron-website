@@ -12,6 +12,7 @@ import { sitePhotos } from '../data/sitePhotos'
 import useSiteContent from '../hooks/useSiteContent'
 import useNewsFeed, { formatNewsDate, headlineFor } from '../hooks/useNewsFeed'
 import ChapterVisual from '../components/ChapterVisual'
+import Hologram from '../components/Hologram'
 import PhotoStrip from '../components/PhotoStrip'
 import { essayContest } from '../data/essayContest'
 import { achievementWeek } from '../data/achievementWeek'
@@ -143,6 +144,29 @@ export default function Home() {
       )}
 
       <LazyHydrate id="home-news" as="section" className="border-y border-gold/35" data-track-section="home-news" component={EventsAndNews} />
+
+      {/* Holographic artwork band. */}
+      <section className="container-page pt-20 grid items-center gap-12 md:grid-cols-[1fr_minmax(0,420px)]">
+        <div className="reveal">
+          <p className="eyebrow">Since November 17, 1911</p>
+          <p className="mt-4 font-display text-4xl md:text-5xl font-semibold italic leading-tight text-ink">
+            Friendship is essential <span className="text-gold">to the soul.</span>
+          </p>
+          <p className="mt-5 max-w-[32rem] text-lg leading-relaxed text-ink/80">
+            Founded at Howard University by four men of vision, Omega Psi Phi carries their principles into every
+            community we serve.
+          </p>
+          <Link
+            to="/founders"
+            {...intent('/founders')}
+            data-track="home: meet the founders"
+            className="mt-7 inline-block rounded-full border border-gold px-5 py-2.5 font-semibold text-gold hover:bg-gold hover:text-night"
+          >
+            Meet the founders →
+          </Link>
+        </div>
+        <Hologram src="/graphics/lightning-que.webp" alt="Omega Psi Phi artwork: a brother in purple and gold beside the Greek letters, surrounded by lightning" size="lg" width={356} height={367} />
+      </section>
 
       <LazyHydrate id="home-visual" as="section" className="container-page pt-20" data-track-section="home-visual" component={ChapterVisual} />
 

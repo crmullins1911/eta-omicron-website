@@ -40,6 +40,7 @@ export default function Login() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Brothers Only' }]}
         title="Brothers Only"
         subtitle="Sign in with your chapter account to access member and financial information."
+        hologram={{ src: '/graphics/que-dog.webp', alt: '', cutout: true, width: 493, height: 621 }}
       />
 
       <section className="container-page py-14 max-w-md">
