@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getSupabase } from '../context/AuthContext'
+import { DUES_SCHEDULE, DEFAULT_DUES, duesCategoryFor, money } from '../data/dues'
 
 // Brothers Only dashboard panels.
 //   FinancialStanding: the signed-in brother's dues for this year, from the member app's records
@@ -60,15 +61,48 @@ export function FinancialStanding({ userId }) {
             {state.data.paid ? (
               <span className="font-semibold text-gold-light">Paid ✓</span>
             ) : (
-              <span className="font-semibold">Not paid yet{state.data.member.dues_amount ? ` · $${state.data.member.dues_amount}` : ''}</span>
+              <span className="font-semibold">Not paid yet · {money(state.data.member.dues_amount ?? DEFAULT_DUES)}</span>
             )}
           </p>
+          {(() => {
+            const cat = duesCategoryFor(state.data.member.dues_amount ?? DEFAULT_DUES)
+            return (
+              <p className="mt-1 text-sm text-ink/70">
+                {cat ? `${cat.label} (${cat.code})` : 'Custom amount'}
+                {!state.data.paid && cat ? ` · ${money(cat.cashApp)} by CashApp/PayPal` : ''}
+              </p>
+            )
+          })()}
+          <DuesSchedule highlight={duesCategoryFor(state.data.member.dues_amount ?? DEFAULT_DUES)?.code} />
           <a href={APP_URL} className="mt-3 inline-block text-sm font-semibold text-gold hover:text-gold-light">
             {state.data.paid ? 'View in the member app →' : 'Pay in the member app (Dues tab) →'}
           </a>
         </>
       )}
     </div>
+  )
+}
+
+function DuesSchedule({ highlight }) {
+  return (
+    <details className="mt-4 text-sm">
+      <summary className="cursor-pointer font-semibold text-gold hover:text-gold-light">Dues schedule</summary>
+      <table className="mt-3 w-full text-left">
+        <thead className="text-xs uppercase tracking-wide text-ink/60">
+          <tr><th className="py-1 font-medium">Category</th><th className="py-1 text-right font-medium">Annual</th><th className="py-1 text-right font-medium">CashApp/PayPal</th></tr>
+        </thead>
+        <tbody>
+          {DUES_SCHEDULE.map((c) => (
+            <tr key={c.code} className={`border-t border-ink/10 ${c.code === highlight ? 'text-gold-light font-semibold' : ''}`}>
+              <td className="py-1.5 pr-2" title={c.label}>{c.code}</td>
+              <td className="py-1.5 text-right">{money(c.annual)}</td>
+              <td className="py-1.5 text-right text-ink/70">{money(c.cashApp)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-2 text-xs text-ink/60">The annual amount is what Pay Dues charges in the member app. CashApp/PayPal amounts cover the processing fee.</p>
+    </details>
   )
 }
 
