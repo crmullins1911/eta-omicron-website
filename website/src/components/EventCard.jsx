@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { toDate } from '../hooks/useNow'
 import { eventSlug } from '../seo'
 import { downloadIcs, shareEvent } from '../lib/calendar'
 
+const Lightbox = lazy(() => import('./Lightbox'))
+
 export default function EventCard({ event: e, past = false, highlight = false, daysAway = null }) {
   const [shareState, setShareState] = useState(null)
+  const [viewing, setViewing] = useState(false)
   const d = toDate(e.date)
   const valid = !isNaN(d)
 
@@ -63,6 +66,33 @@ export default function EventCard({ event: e, past = false, highlight = false, d
           </div>
         )}
       </div>
+
+      {e.image && (
+        // Photo or flyer from the member app. Shown whole (flyers aren't cropped); tap for full size.
+        <button
+          type="button"
+          onClick={() => setViewing(true)}
+          onMouseEnter={() => import('./Lightbox')}
+          aria-label={`View photo for ${e.title}`}
+          data-track="event: open photo"
+          className="shrink-0 self-start w-full sm:w-44 rounded-md overflow-hidden border border-ink/12 bg-night/40 cursor-zoom-in order-first sm:order-none"
+        >
+          <img
+            src={e.image}
+            alt={`${e.title} flyer`}
+            crossOrigin="anonymous"
+            loading="lazy"
+            decoding="async"
+            className="w-full max-h-64 sm:max-h-56 object-contain"
+          />
+        </button>
+      )}
+
+      {viewing && (
+        <Suspense fallback={null}>
+          <Lightbox items={[{ url: e.image, title: e.title }]} index={0} onChange={() => {}} onClose={() => setViewing(false)} />
+        </Suspense>
+      )}
     </article>
   )
 }
