@@ -12,24 +12,33 @@ import {
 const MINUTE = 60 * 1000
 
 // Events: the member app's "events" table, only rows marked on_website = true.
+// An event's photo/flyer lives in the app's private "event-photos" bucket, so each gets a signed
+// link (the database only lets the public sign photos of events shown on the website).
+const EVENT_FIELDS = 'title,event_date,event_time,location,description'
 export const eventsQuery = {
   key: 'events:public',
   ttl: 1 * MINUTE, // events change often (from the member app); keep them close to live
   fallback: placeholderEvents,
-  fetch: () =>
-    restSelect('events', {
-      select: 'title,event_date,event_time,location,description',
-      on_website: 'eq.true',
-      order: 'event_date.asc',
-    }).then((rows) =>
-      rows.map((e) => ({
-        title: e.title,
-        date: e.event_date,
-        time: e.event_time,
-        location: e.location,
-        description: e.description,
-      }))
-    ),
+  fetch: async () => {
+    const params = { on_website: 'eq.true', order: 'event_date.asc' }
+    // Until the event-photos database update is run there's no image_url column, and asking for
+    // it would fail the whole query — so fall back to the fields that are always there.
+    const rows = await restSelect('events', { ...params, select: EVENT_FIELDS + ',image_url' }).catch(() =>
+      restSelect('events', { ...params, select: EVENT_FIELDS })
+    )
+    const urls = await restSignUrls(
+      'event-photos',
+      rows.map((e) => e.image_url).filter(Boolean)
+    ).catch(() => ({}))
+    return rows.map((e) => ({
+      title: e.title,
+      date: e.event_date,
+      time: e.event_time,
+      location: e.location,
+      description: e.description,
+      image: e.image_url ? urls[e.image_url] || null : null,
+    }))
+  },
 }
 
 // Media: "media_items" table (+ Supabase Storage URLs). An empty table shows placeholders.

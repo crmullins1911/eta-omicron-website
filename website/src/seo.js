@@ -169,6 +169,7 @@ function eventLd(e) {
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     ...(e.description && { description: e.description }),
+    ...(e.image && { image: [e.image] }),
     location: { '@type': 'Place', name: e.location || 'To be announced', address: e.location || 'To be announced' },
     organizer: { '@type': 'Organization', name: ORG_NAME, url: SITE_URL + '/' },
     url: SITE_URL + '/events#' + eventSlug(e),
