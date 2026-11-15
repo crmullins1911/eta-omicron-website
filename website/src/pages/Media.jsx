@@ -63,7 +63,7 @@ export default function Media() {
                   <span>{m.type === 'video' ? 'Video placeholder' : 'Photo placeholder'}</span>
                 )}
               </div>
-              <figcaption className="p-3 font-semibold text-sm">{m.title}</figcaption>
+              <figcaption className="p-3 font-semibold text-sm line-clamp-2" title={m.title}>{m.title}</figcaption>
             </figure>
           ))}
         </div>
